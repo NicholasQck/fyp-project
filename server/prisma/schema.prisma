@@ -1,0 +1,29 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// Command to update the schema: npx prisma migrate dev --name <NAME FOR MIGRATION>
+// Command to seed database: npx prisma db seed
+// Prisma API docs: https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#deletemany
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  userID    String @id
+  roleID    Int    @db.SmallInt
+  firstName String
+  lastName  String
+  password  String
+  role      Role   @relation(fields: [roleID], references: [roleID])
+}
+
+model Role {
+  roleID   Int    @id @db.SmallInt
+  roleName String
+  users    User[]
+}

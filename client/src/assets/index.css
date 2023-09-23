@@ -6,9 +6,11 @@
   font-family: 'Share Tech Mono', monospace;
 }
 *:focus {
-  outline: solid turquoise 0.3px;
+  outline: solid turquoise 2px;
 }
 body {
+  color: white;
+  background-color: black;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

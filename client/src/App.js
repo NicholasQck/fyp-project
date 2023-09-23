@@ -2,12 +2,10 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useGlobalContext } from './context';
 
-// import assets
-import './assets/app.css';
-
 // import pages
 import Login from './pages/login/Login';
 import Titles from './pages/main/Titles';
+import CreateUser from './pages/dashboard/CreateUser';
 import Error from './pages/error/Error';
 
 // import components
@@ -22,6 +20,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/titles" element={<Titles />} />
+        <Route path="/create_user" element={<CreateUser />} />
         <Route path="*" element={<Error />} />
       </Routes>
     </Router>
