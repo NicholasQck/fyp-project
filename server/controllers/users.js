@@ -14,12 +14,20 @@ export const getUser = async (req, res) => {
 };
 
 export const createUser = async (req, res) => {
-  const { password } = req.body;
+  const { userID, roleID, fName, lName, password } = req.body;
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
-  const testUser = { ...req.body, password: hashedPassword };
+  const user = await prisma.user.create({
+    data: {
+      userID,
+      roleID: parseInt(roleID),
+      firstName: fName,
+      lastName: lName,
+      password: hashedPassword,
+    },
+  });
 
-  res.status(StatusCodes.CREATED).json({ data: 'success', testUser });
+  res.status(StatusCodes.CREATED).json({ data: user });
 };
 
 export const updateUser = async (req, res) => {

@@ -17,7 +17,7 @@ const CreateUser = () => {
   const [roles, setRoles] = useState([]);
   const [formData, setFormData] = useState({
     userID: '',
-    roleID: 3,
+    roleID: '3',
     fName: '',
     lName: '',
     password: '',
@@ -79,7 +79,6 @@ const CreateUser = () => {
               />
 
               <label htmlFor="roleID">Role</label>
-              <input defaultValue={formData.roleID} id="roleID" hidden />
               <select
                 onChange={(e) => {
                   setFormData({ ...formData, roleID: e.target.value });

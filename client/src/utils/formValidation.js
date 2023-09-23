@@ -7,7 +7,7 @@ export const userFormValidation = (userInput, setError) => {
   }
 
   const userIDValid = userID.match(/^[a-z0-9]+$/);
-  const roleIDValid = roleID.toString().match(/^[1-3]$/);
+  const roleIDValid = roleID.match(/^[1-3]$/);
   const fNameValid = fName.match(
     /^[A-Za-z]+([-'\s]?[A-Za-z]+)?([-'\s]?[A-Za-z]+)?$/
   );
