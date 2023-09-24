@@ -4,20 +4,29 @@ import 'express-async-errors';
 
 const app = express();
 
-// routers
+// import routers
 import { titlesRouter } from './routes/titleRoutes.js';
 import { usersRouter } from './routes/userRoutes.js';
 
-// middleware
+// import custom middleware
+import { errorHandlingMiddleware } from './middleware/errorHandling.js';
+import { notFoundMiddleware } from './middleware/notFound.js';
+
+// use middleware
 app.use(express.json());
+
+// landing endpoint
+app.get('/', (req, res) => {
+  res.status(200).json({ data: 'hi' });
+});
 
 // routes
 app.use('/api/titles', titlesRouter);
 app.use('/api/users', usersRouter);
 
-app.get('/', (req, res) => {
-  res.status(200).json({ data: 'hi' });
-});
+// use custom middleware
+app.use(notFoundMiddleware);
+app.use(errorHandlingMiddleware);
 
 const port = process.env.PORT || 5000;
 

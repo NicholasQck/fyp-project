@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Prisma } from '@prisma/client';
 import { StatusCodes } from 'http-status-codes';
 import bcrypt from 'bcrypt';
 import { BadRequestError } from '../errors/badRequest.js';

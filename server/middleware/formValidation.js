@@ -1,8 +1,6 @@
 import express from 'express';
 import { check, validationResult } from 'express-validator';
 
-const app = express();
-
 // Custom middleware using Express Validator
 export const validateUser = [
   // Validate inputs using express-validator

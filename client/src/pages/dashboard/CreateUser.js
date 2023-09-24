@@ -40,9 +40,23 @@ const CreateUser = () => {
     if (validInput) {
       try {
         const res = await axios.post('/api/users', formData);
+        // set success modal (TODO)
+        setFormData({
+          userID: '',
+          roleID: '3',
+          fName: '',
+          lName: '',
+          password: '',
+          passwordConfirm: '',
+        });
         console.log(res);
       } catch (error) {
-        console.log(error);
+        if (error.response.data.errors) {
+          setError(true, error.response.data.errors[0].msg);
+        } else {
+          setError(true, error.response.data.msg);
+        }
+        console.log(error.response);
         console.log(error.response.data.errors);
       }
     }
