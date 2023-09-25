@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { useGlobalContext } from '../../context';
 
@@ -23,6 +23,7 @@ const CreateUser = () => {
     password: '',
     passwordConfirm: '',
   });
+  const usernameRef = useRef();
 
   const fetchData = async () => {
     try {
@@ -32,6 +33,10 @@ const CreateUser = () => {
     } catch (error) {
       console.log(error.response);
     }
+  };
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
@@ -69,6 +74,7 @@ const CreateUser = () => {
 
   useEffect(() => {
     fetchData();
+    usernameRef.current.focus();
   }, []);
 
   return (
@@ -86,18 +92,14 @@ const CreateUser = () => {
               <input
                 type="text"
                 id="userID"
+                name="userID"
+                ref={usernameRef}
                 value={formData.userID}
-                onChange={(e) => {
-                  setFormData({ ...formData, userID: e.target.value });
-                }}
+                onChange={handleChange}
               />
 
               <label htmlFor="roleID">Role</label>
-              <select
-                onChange={(e) => {
-                  setFormData({ ...formData, roleID: e.target.value });
-                }}
-              >
+              <select id="roleID" name="roleID" onChange={handleChange}>
                 {roles.toReversed().map((role) => {
                   return (
                     <option key={role.roleID} value={role.roleID}>
@@ -111,40 +113,36 @@ const CreateUser = () => {
               <input
                 type="text"
                 id="fName"
+                name="fName"
                 value={formData.fName}
-                onChange={(e) => {
-                  setFormData({ ...formData, fName: e.target.value });
-                }}
+                onChange={handleChange}
               />
 
               <label htmlFor="lName">Last Name</label>
               <input
                 type="text"
                 id="lName"
+                name="lName"
                 value={formData.lName}
-                onChange={(e) => {
-                  setFormData({ ...formData, lName: e.target.value });
-                }}
+                onChange={handleChange}
               />
 
               <label htmlFor="password">Password</label>
               <input
                 type="text"
                 id="password"
+                name="password"
                 value={formData.password}
-                onChange={(e) => {
-                  setFormData({ ...formData, password: e.target.value });
-                }}
+                onChange={handleChange}
               />
 
               <label htmlFor="passwordConfirm">Confirm Password</label>
               <input
                 type="text"
                 id="passwordConfirm"
+                name="passwordConfirm"
                 value={formData.passwordConfirm}
-                onChange={(e) => {
-                  setFormData({ ...formData, passwordConfirm: e.target.value });
-                }}
+                onChange={handleChange}
               />
 
               <button type="submit" className="btn-primary">
