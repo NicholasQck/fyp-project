@@ -34,6 +34,7 @@ body {
   width: 40%;
   align-items: center;
   justify-content: center;
+  margin: auto;
   /* min-height: 430px; */
   /* border: 1px solid red; */
 }
@@ -66,7 +67,7 @@ body {
 }
 
 .btn-submit-login {
-  margin-top: 20px;
+  margin: 20px 0px 10px;
   color: #fff;
   background-color: #1463f3;
   border-color: transparent;
