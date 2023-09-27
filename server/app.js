@@ -5,12 +5,14 @@ import 'express-async-errors';
 const app = express();
 
 // import routers
+import { authRouter } from './routes/authRoutes.js';
 import { titlesRouter } from './routes/titleRoutes.js';
 import { usersRouter } from './routes/userRoutes.js';
 
 // import custom middleware
 import { errorHandlingMiddleware } from './middleware/errorHandling.js';
 import { notFoundMiddleware } from './middleware/notFound.js';
+import { authUser } from './middleware/auth.js';
 
 // use middleware
 app.use(express.json());
@@ -21,8 +23,9 @@ app.get('/', (req, res) => {
 });
 
 // routes
-app.use('/api/titles', titlesRouter);
-app.use('/api/users', usersRouter);
+app.use('/api/auth', authRouter);
+app.use('/api/titles', authUser, titlesRouter);
+app.use('/api/users', authUser, usersRouter);
 
 // use custom middleware
 app.use(notFoundMiddleware);
