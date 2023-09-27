@@ -47,5 +47,32 @@ export const userFormValidation = (userInput, setError) => {
     setError(true, 'Passwords do not match');
     return false;
   }
+
+  return true;
+};
+
+export const loginFormValidation = (loginData, setError) => {
+  const { username, pass } = loginData;
+
+  if (!username || !pass) {
+    setError(true, 'Please ensure all fields are provided');
+    return false;
+  }
+
+  const userIDValid = username.match(/^[a-z0-9]+$/);
+  const passwordValid = pass.match(
+    /^[a-zA-Z0-9!@#$%^&*()-_=+[\]{}|;:'",.<>?/\\~`]+$/
+  );
+
+  if (!userIDValid) {
+    setError(true, 'Please enter a valid username');
+    return false;
+  }
+
+  if (!passwordValid) {
+    setError(true, 'Please enter a valid password');
+    return false;
+  }
+
   return true;
 };
