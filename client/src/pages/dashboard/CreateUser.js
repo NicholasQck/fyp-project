@@ -23,7 +23,7 @@ const CreateUser = () => {
     password: '',
     passwordConfirm: '',
   });
-  const usernameRef = useRef();
+  const userIDRef = useRef();
 
   const fetchData = async () => {
     try {
@@ -41,7 +41,8 @@ const CreateUser = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let validInput = userFormValidation(formData, setError);
+    const validInput = userFormValidation(formData, setError);
+
     if (validInput) {
       try {
         const res = await axios.post('/api/users', formData);
@@ -54,11 +55,14 @@ const CreateUser = () => {
           password: '',
           passwordConfirm: '',
         });
+        // remove when done
         console.log(res);
       } catch (error) {
         if (error.response.data.errors) {
+          // handle server validation middleware errors
           setError(true, error.response.data.errors[0].msg);
         } else {
+          // handle server custom errors
           setError(true, error.response.data.msg);
         }
         console.log(error.response);
@@ -68,13 +72,13 @@ const CreateUser = () => {
   };
 
   // un-comment to check form inputs
-  useEffect(() => {
-    console.log(formData);
-  }, [formData]);
+  // useEffect(() => {
+  //   console.log(formData);
+  // }, [formData]);
 
   useEffect(() => {
     fetchData();
-    usernameRef.current.focus();
+    userIDRef.current.focus();
   }, []);
 
   return (
@@ -93,7 +97,7 @@ const CreateUser = () => {
                 type="text"
                 id="userID"
                 name="userID"
-                ref={usernameRef}
+                ref={userIDRef}
                 value={formData.userID}
                 onChange={handleChange}
               />
@@ -148,7 +152,7 @@ const CreateUser = () => {
               <button type="submit" className="btn-primary">
                 Create
               </button>
-              {errorMsg.show && <ErrorMsg msg={errorMsg.msg} />}
+              {errorMsg.show && <ErrorMsg />}
             </div>
           </form>
         </article>

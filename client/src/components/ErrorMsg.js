@@ -4,7 +4,7 @@ import { useGlobalContext } from '../context';
 // import assets
 import '../assets/errorMsg.css';
 
-const ErrorMsg = ({ msg }) => {
+const ErrorMsg = () => {
   const { errorMsg, setError } = useGlobalContext();
 
   useEffect(() => {
@@ -15,7 +15,7 @@ const ErrorMsg = ({ msg }) => {
     return () => clearTimeout(errMsgTimer);
   }, [errorMsg, setError]);
 
-  return <p>{msg}</p>;
+  return <p>{errorMsg.msg}</p>;
 };
 
 export default ErrorMsg;
