@@ -5,6 +5,15 @@ const reducer = (state, action) => {
     msg = action.payload.msg;
     return { ...state, errorMsg: { show, msg } };
   }
+
+  if (action.type === 'SET_USER') {
+    const decodedUser = action.payload;
+    return { ...state, user: { ...decodedUser } };
+  }
+
+  if (action.type === 'LOGOUT_USER') {
+    return { ...state, user: null };
+  }
 };
 
 export default reducer;
