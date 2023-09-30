@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import axios from 'axios';
 import { useGlobalContext } from '../../context';
 
@@ -13,7 +13,7 @@ import Navbar from '../../components/Navbar';
 import ErrorMsg from '../../components/ErrorMsg';
 
 const CreateUser = () => {
-  const { errorMsg, setError } = useGlobalContext();
+  const { user, errorMsg, setError, checkSession } = useGlobalContext();
   const [roles, setRoles] = useState([]);
   const [formData, setFormData] = useState({
     userID: '',
@@ -25,15 +25,18 @@ const CreateUser = () => {
   });
   const userIDRef = useRef();
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
+    console.log('test');
     try {
-      const res = await axios.get('/api/users/roles');
+      const res = await axios.get('/api/users/roles', {
+        headers: { Authorization: `Bearer ${user.token}` },
+      });
       const { roles } = res.data;
       setRoles(roles);
     } catch (error) {
       console.log(error.response);
     }
-  };
+  }, [user]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -45,7 +48,9 @@ const CreateUser = () => {
 
     if (validInput) {
       try {
-        const res = await axios.post('/api/users', formData);
+        const res = await axios.post('/api/users', formData, {
+          headers: { Authorization: `Bearer ${user.token}` },
+        });
         // set success modal (TODO)
         setFormData({
           userID: '',
@@ -72,14 +77,14 @@ const CreateUser = () => {
   };
 
   // un-comment to check form inputs
-  // useEffect(() => {
-  //   console.log(formData);
-  // }, [formData]);
+  useEffect(() => {
+    checkSession();
+  });
 
   useEffect(() => {
     fetchData();
     userIDRef.current.focus();
-  }, []);
+  }, [fetchData]);
 
   return (
     <>
