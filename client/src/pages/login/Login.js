@@ -54,7 +54,7 @@ const Login = () => {
 
   return (
     <>
-      {user && <Navigate to="/create_user" />}
+      {user && <Navigate to="/titles" />}
       <div className="login-container">
         <div className="design-container">
           <img src={logo} alt="logo" />
