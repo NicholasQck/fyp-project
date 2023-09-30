@@ -18,12 +18,31 @@ export const AppProvider = ({ children }) => {
 
   const login = (token) => {
     const decodedUser = jwt_decode(token);
-    dispatch({ type: 'SET_USER', payload: decodedUser });
+    dispatch({ type: 'SET_USER', payload: { decodedUser, token } });
     localStorage.setItem('user', JSON.stringify({ token }));
+  };
+
+  const checkSession = () => {
+    const user = localStorage.getItem('user');
+
+    if (!user) {
+      logout();
+    }
+
+    if (state.user) {
+      const { exp } = state.user;
+      // convert exp to milliseconds
+      const expDateTime = new Date(exp * 1000);
+      const currentDateTime = new Date();
+      if (currentDateTime > expDateTime) {
+        logout();
+      }
+    }
   };
 
   const logout = () => {
     dispatch({ type: 'LOGOUT_USER' });
+    localStorage.removeItem('user');
   };
 
   useEffect(() => {
@@ -31,12 +50,21 @@ export const AppProvider = ({ children }) => {
     if (user) {
       const newUser = JSON.parse(user);
       const { token } = newUser;
-      login(token);
+      const decodedToken = jwt_decode(token);
+      const expDateTime = new Date(decodedToken.exp * 1000);
+      const currentDateTime = new Date();
+      if (currentDateTime > expDateTime) {
+        logout();
+      } else {
+        login(token);
+      }
     }
   }, []);
 
   return (
-    <AppContext.Provider value={{ ...state, setError, login, logout }}>
+    <AppContext.Provider
+      value={{ ...state, setError, login, checkSession, logout }}
+    >
       {children}
     </AppContext.Provider>
   );
