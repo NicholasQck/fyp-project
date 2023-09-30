@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { UnauthenticatedError } from '../errors/unauthenticated.js';
+import { ForbiddenError } from '../errors/forbidden.js';
 
 export const authUser = async (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -16,6 +17,9 @@ export const authUser = async (req, res, next) => {
     req.user = { userID, roleID };
     next();
   } catch (error) {
+    if (error.name == 'TokenExpiredError') {
+      throw new ForbiddenError('Session expired, please login again');
+    }
     throw new UnauthenticatedError('Authentication is unsuccessful');
   }
 };
