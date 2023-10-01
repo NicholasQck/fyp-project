@@ -15,7 +15,7 @@ const ErrorMsg = () => {
     return () => clearTimeout(errMsgTimer);
   }, [errorMsg, setError]);
 
-  return <p>{errorMsg.msg}</p>;
+  return <p className="err-msg">{errorMsg.msg}</p>;
 };
 
 export default ErrorMsg;
