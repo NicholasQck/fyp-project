@@ -1,8 +1,4 @@
-body {
-  background-color: black;
-}
-
-article {
+.create-user-article {
   background-color: #1d2023;
   width: 65%;
   height: 60%;
