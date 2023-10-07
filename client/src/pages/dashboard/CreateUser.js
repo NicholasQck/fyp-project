@@ -1,19 +1,24 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import axios from 'axios';
-import { useGlobalContext } from '../../context';
+// import { useGlobalContext } from '../../context';
 
 // import assests
 import '../../assets/createUser.css';
 
 // import utils
 import { userFormValidation } from '../../utils/formValidation';
+import { validateSession } from '../../utils/sessionValidation';
 
 //import components
+import Loading from '../../components/Loading';
 import Navbar from '../../components/Navbar';
 import ErrorMsg from '../../components/ErrorMsg';
+import Modal from '../../components/Modal';
 
 const CreateUser = () => {
-  const { user, errorMsg, setError, checkSession } = useGlobalContext();
+  // const { checkSession } = useGlobalContext();
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState({ show: false, msg: '' });
   const [roles, setRoles] = useState([]);
   const [formData, setFormData] = useState({
     userID: '',
@@ -24,19 +29,22 @@ const CreateUser = () => {
     passwordConfirm: '',
   });
   const userIDRef = useRef();
+  const sessionToken = validateSession();
 
   const fetchData = useCallback(async () => {
-    console.log('test');
     try {
+      setLoading(true);
       const res = await axios.get('/api/users/roles', {
-        headers: { Authorization: `Bearer ${user.token}` },
+        headers: { Authorization: `Bearer ${sessionToken}` },
       });
       const { roles } = res.data;
       setRoles(roles);
+      setLoading(false);
     } catch (error) {
       console.log(error.response);
+      setLoading(false);
     }
-  }, [user]);
+  }, [sessionToken, setRoles, setLoading]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -44,12 +52,12 @@ const CreateUser = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const validInput = userFormValidation(formData, setError);
+    const validInput = userFormValidation(formData, setErrorMsg);
 
     if (validInput) {
       try {
         const res = await axios.post('/api/users', formData, {
-          headers: { Authorization: `Bearer ${user.token}` },
+          headers: { Authorization: `Bearer ${sessionToken}` },
         });
         // set success modal (TODO)
         setFormData({
@@ -65,10 +73,10 @@ const CreateUser = () => {
       } catch (error) {
         if (error.response.data.errors) {
           // handle server validation middleware errors
-          setError(true, error.response.data.errors[0].msg);
+          setErrorMsg({ show: true, msg: error.response.data.errors[0].msg });
         } else {
           // handle server custom errors
-          setError(true, error.response.data.msg);
+          setErrorMsg({ show: true, msg: error.response.data.msg });
         }
         console.log(error.response);
         console.log(error.response.data.errors);
@@ -77,22 +85,25 @@ const CreateUser = () => {
   };
 
   // un-comment to check form inputs
-  useEffect(() => {
-    checkSession();
-  });
+  // useEffect(() => {
+  //   console.log(user);
+  // }, []);
 
   useEffect(() => {
     fetchData();
-    userIDRef.current.focus();
-  }, [fetchData]);
+    userIDRef?.current?.focus();
+  }, [fetchData, userIDRef]);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <>
-      <nav>
-        <Navbar />
-      </nav>
+      {!sessionToken && <Modal />}
+      <Navbar />
       <main>
-        <article>
+        <article className="create-user-article">
           <form className="create-user-form" onSubmit={handleSubmit}>
             <div className="form-control-crud">
               <h1>Create a user account</h1>
@@ -157,7 +168,9 @@ const CreateUser = () => {
               <button type="submit" className="btn-primary">
                 Create
               </button>
-              {errorMsg.show && <ErrorMsg />}
+              {errorMsg.show && (
+                <ErrorMsg msg={errorMsg.msg} setErrorMsg={setErrorMsg} />
+              )}
             </div>
           </form>
         </article>
