@@ -1,9 +1,28 @@
-import { Outlet, Navigate } from 'react-router-dom';
+import React from 'react';
+import { Outlet, useLocation } from 'react-router-dom';
+import jwt_decode from 'jwt-decode';
+
+// import components
+import Modal from './Modal';
 
 const PrivateRoutes = () => {
-  const user = localStorage.getItem('user');
+  let user = JSON.parse(sessionStorage.getItem('user'));
 
-  return user ? <Outlet /> : <Navigate to="/" />;
+  if (user) {
+    const decodedUser = jwt_decode(user.token);
+    const { exp } = decodedUser;
+    // convert exp to milliseconds
+    const expDateTime = new Date(exp * 1000);
+    const currentDateTime = new Date();
+    if (currentDateTime > expDateTime) {
+      sessionStorage.removeItem('user');
+      user = null;
+    }
+  }
+  console.log('location');
+  useLocation();
+
+  return user ? <Outlet /> : <Modal />;
 };
 
 export default PrivateRoutes;

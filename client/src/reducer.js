@@ -8,12 +8,20 @@ const reducer = (state, action) => {
 
   if (action.type === 'SET_USER') {
     const { decodedUser, token } = action.payload;
-    return { ...state, user: { ...decodedUser, token } };
+    return {
+      ...state,
+      user: { ...decodedUser, token },
+    };
   }
 
   if (action.type === 'LOGOUT_USER') {
-    return { user: null, errorMsg: { show: false, msg: '' } };
+    return {
+      user: null,
+      errorMsg: { show: false, msg: '' },
+    };
   }
+
+  return state;
 };
 
 export default reducer;

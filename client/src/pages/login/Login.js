@@ -12,13 +12,16 @@ import { loginFormValidation } from '../../utils/formValidation';
 
 // import components
 import ErrorMsg from '../../components/ErrorMsg';
+import { validateSession } from '../../utils/sessionValidation';
 
 const Login = () => {
-  const { user, login, errorMsg, setError } = useGlobalContext();
+  const { login } = useGlobalContext();
   const [inputData, setInputData] = useState({
     username: '',
     pass: '',
   });
+  const [errorMsg, setErrorMsg] = useState({ show: false, msg: '' });
+  const sessionToken = validateSession();
   const usernameRef = useRef();
 
   const handleChange = (e) => {
@@ -27,7 +30,7 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const validInput = loginFormValidation(inputData, setError);
+    const validInput = loginFormValidation(inputData, setErrorMsg);
 
     if (validInput) {
       try {
@@ -35,9 +38,8 @@ const Login = () => {
         const { token } = res.data;
         login(token);
         setInputData({ username: '', pass: '' });
-        console.log(res.data);
       } catch (error) {
-        setError(true, error.response.data.msg);
+        setErrorMsg({ show: true, msg: error.response.data.msg });
         console.log(error.response.data.msg);
       }
     }
@@ -49,12 +51,12 @@ const Login = () => {
   // }, [inputData]);
 
   useEffect(() => {
-    usernameRef.current.focus();
+    usernameRef?.current?.focus();
   }, []);
 
   return (
     <>
-      {user && <Navigate to="/titles" />}
+      {sessionToken && <Navigate to="/titles" />}
       <div className="login-container">
         <div className="design-container">
           <img src={logo} alt="logo" />
@@ -88,7 +90,9 @@ const Login = () => {
               >
                 Login
               </button>
-              {errorMsg.show && <ErrorMsg />}
+              {errorMsg.show && (
+                <ErrorMsg msg={errorMsg.msg} setErrorMsg={setErrorMsg} />
+              )}
             </div>
           </form>
         </div>
