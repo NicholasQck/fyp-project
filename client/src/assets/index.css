@@ -5,9 +5,7 @@
   box-sizing: border-box;
   font-family: 'Share Tech Mono', monospace;
 }
-*:focus {
-  outline: solid turquoise 2px;
-}
+
 body {
   color: white;
   background-color: black;
@@ -18,4 +16,74 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.disable-default-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.modal {
+  overflow: hidden;
+  position: absolute;
+  margin: auto;
+  padding: 0.5rem;
+  min-height: fit-content;
+  min-width: fit-content;
+  width: 25%;
+  height: 15%;
+  background-color: black;
+  border-radius: 10px;
+}
+
+.modal p {
+  color: white;
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+}
+
+.modal button {
+  all: unset;
+  border-radius: 15px;
+  padding: 10px 20px;
+  color: white;
+  background-color: #1463f3;
+  font-size: 1.05rem;
+  cursor: pointer;
+}
+
+.modal::backdrop {
+  background-color: rgba(204, 208, 216, 0.5);
+}
+
+.dark-blue-btn {
+  color: #fff;
+  background-color: #1463f3;
+  border-color: transparent;
+  border-radius: 20px;
+  cursor: pointer;
+  padding: 20px 15px;
+  width: fit-content;
+  font-size: 1.05rem;
+}
+
+.dark-blue-btn:hover {
+  background-color: #0f4de6;
+  transition: background-color 0.3s ease-out;
+}
+
+.light-blue-btn {
+  color: #fff;
+  background-color: #84a4fc;
+  border-color: transparent;
+  border-radius: 20px;
+  cursor: pointer;
+  padding: 20px 15px;
+  width: fit-content;
+  font-size: 1.05rem;
+}
+
+.light-blue-btn:hover {
+  background-color: #6b8cd6;
+  transition: background-color 0.3s ease-out;
 }

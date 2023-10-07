@@ -1,0 +1,134 @@
+body {
+  background-color: black;
+}
+
+.search-bar {
+  width: 65%;
+  height: 60%;
+  margin: 20px auto;
+}
+
+.search-title-form {
+  padding: 5px 0px;
+}
+
+.form-control-search {
+  display: flex;
+  flex-direction: row;
+}
+
+.form-control-search input {
+  height: 35px;
+  width: 50%;
+  font-size: 1.1rem;
+  border-color: transparent;
+  border-radius: 10px;
+  background-color: #ccd0d9;
+  background-image: url(images/searchIcon.png);
+  background-size: 25px;
+  background-repeat: no-repeat;
+  background-position: center left;
+  text-indent: 30px;
+}
+
+.form-control-search input::placeholder {
+  color: white;
+}
+
+.titlelist-container {
+  width: 65%;
+  height: 60%;
+  margin: auto;
+  /* border: 3px solid white; */
+}
+
+.titlelist {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+}
+
+.single-title-article {
+  flex-grow: 1;
+  height: 100px;
+  margin: 5px 0px;
+  background-color: #1d2023;
+  transition: transform 0.2s ease-out;
+}
+
+.single-title-article:hover {
+  transform: scale(1.03);
+  border: 1px solid #1463f3;
+}
+
+.single-title-wrapper {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title-detail-brief {
+  margin-left: 10px;
+}
+
+.title-detail-brief h2 {
+  word-spacing: -5px;
+}
+
+.title-detail-brief p {
+  font-size: 1.03rem;
+}
+
+.availability-container {
+  margin-right: 10px;
+  text-align: right;
+  font-size: 1.1rem;
+}
+
+.available {
+  color: #238636;
+}
+
+.taken {
+  color: #da3633;
+}
+
+.title-detail-article {
+  display: flex;
+  flex-direction: column;
+  background-color: #1d2023;
+  min-width: 65vw;
+  max-width: 65vh;
+  width: fit-content;
+  height: fit-content;
+  margin: auto;
+  padding: 20px 15px 40px;
+}
+
+.title-detail-article h1 {
+  color: #1463f3;
+  font-size: 2.2rem;
+}
+
+.title-detail-article h2 {
+  color: #1463f3;
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.title-detail-article h3 {
+  color: #84a4fc;
+  font-size: 1.5rem;
+}
+
+.title-detail-article p {
+  font-size: 1.1rem;
+}
+
+.title-detail-btn-container {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 60px;
+}
