@@ -2,7 +2,7 @@ export const userFormValidation = (userInput, setError) => {
   const { userID, roleID, fName, lName, password, passwordConfirm } = userInput;
 
   if (!userID || !roleID || !fName || !lName || !password || !passwordConfirm) {
-    setError(true, 'Please ensure all fields are provided');
+    setError({ show: true, msg: 'Please ensure all fields are provided' });
     return false;
   }
 
@@ -19,32 +19,44 @@ export const userFormValidation = (userInput, setError) => {
   );
 
   if (!userIDValid) {
-    setError(true, 'User ID should only contain alphanumeric characters');
+    setError({
+      show: true,
+      msg: 'User ID should only contain alphanumeric characters',
+    });
     return false;
   }
 
   if (!fNameValid) {
-    setError(true, 'First name should not contain special characters');
+    setError({
+      show: true,
+      msg: 'First name should not contain special characters',
+    });
     return false;
   }
 
   if (!lNameValid) {
-    setError(true, 'Last name should not contain special characters');
+    setError({
+      show: true,
+      msg: 'Last name should not contain special characters',
+    });
     return false;
   }
 
   if (!roleIDValid) {
-    setError(true, 'Please select a proper role');
+    setError({ show: true, msg: 'Please select a proper role' });
     return false;
   }
 
   if (!passwordValid) {
-    setError(true, 'Password should be 8 - 16 characters in length');
+    setError({
+      show: true,
+      msg: 'Password should be 8 - 16 characters in length',
+    });
     return false;
   }
 
   if (password !== passwordConfirm) {
-    setError(true, 'Passwords do not match');
+    setError({ show: true, msg: 'Passwords do not match' });
     return false;
   }
 
@@ -55,7 +67,7 @@ export const loginFormValidation = (loginData, setError) => {
   const { username, pass } = loginData;
 
   if (!username || !pass) {
-    setError(true, 'Please ensure all fields are provided');
+    setError({ show: true, msg: 'Please ensure all fields are provided' });
     return false;
   }
 
@@ -65,12 +77,12 @@ export const loginFormValidation = (loginData, setError) => {
   );
 
   if (!userIDValid) {
-    setError(true, 'Please enter a valid username');
+    setError({ show: true, msg: 'Please enter a valid username' });
     return false;
   }
 
   if (!passwordValid) {
-    setError(true, 'Please enter a valid password');
+    setError({ show: true, msg: 'Please enter a valid password' });
     return false;
   }
 

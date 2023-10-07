@@ -1,21 +1,17 @@
 import React, { useEffect } from 'react';
-import { useGlobalContext } from '../context';
 
 // import assets
 import '../assets/errorMsg.css';
 
-const ErrorMsg = () => {
-  const { errorMsg, setError } = useGlobalContext();
-
+const ErrorMsg = ({ msg, setErrorMsg }) => {
   useEffect(() => {
-    console.log(errorMsg);
     const errMsgTimer = setTimeout(() => {
-      setError();
+      setErrorMsg({ show: false, msg: '' });
     }, 2000);
     return () => clearTimeout(errMsgTimer);
-  }, [errorMsg, setError]);
+  }, [setErrorMsg]);
 
-  return <p className="err-msg">{errorMsg.msg}</p>;
+  return <p className="err-msg">{msg}</p>;
 };
 
 export default ErrorMsg;
