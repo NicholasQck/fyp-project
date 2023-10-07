@@ -3,6 +3,7 @@
 // Command to update the schema: npx prisma migrate dev --name <NAME FOR MIGRATION>
 // Command to seed database: npx prisma db seed
 // Prisma API docs: https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#deletemany
+// EPERM error: try npm i @prisma/client first, if cannot then delete node modules and npm i the whole thing, if cannot then explicitly npm i @prisma/client
 
 generator client {
   provider = "prisma-client-js"
@@ -14,16 +15,27 @@ datasource db {
 }
 
 model User {
-  userID    String @id
-  roleID    Int    @db.SmallInt
+  userID    String  @id
+  roleID    Int     @db.SmallInt
   firstName String
   lastName  String
   password  String
-  role      Role   @relation(fields: [roleID], references: [roleID])
+  role      Role    @relation(fields: [roleID], references: [roleID])
+  titles    Title[]
 }
 
 model Role {
   roleID   Int    @id @db.SmallInt
   roleName String
   users    User[]
+}
+
+model Title {
+  titleID      String  @id @default(uuid())
+  proposedBy   String
+  titleName    String
+  fieldArea    String
+  titleDesc    String
+  availability Boolean @default(true)
+  supervisor   User    @relation(fields: [proposedBy], references: [userID])
 }
