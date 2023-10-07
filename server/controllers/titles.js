@@ -1,5 +1,24 @@
+import { PrismaClient } from '@prisma/client';
+import { StatusCodes } from 'http-status-codes';
+
+const prisma = new PrismaClient();
+
 export const getAllTitles = async (req, res) => {
-  res.send('get all titles');
+  const titles = await prisma.title.findMany({
+    include: {
+      supervisor: {
+        // doesn't work
+        // orderBy: {
+        //   firstName: 'asc',
+        // },
+        select: {
+          firstName: true,
+          lastName: true,
+        },
+      },
+    },
+  });
+  res.status(StatusCodes.OK).json({ titles });
 };
 
 export const getTitle = async (req, res) => {
