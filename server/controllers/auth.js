@@ -1,11 +1,9 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from '../prisma/client.js';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { BadRequestError } from '../errors/badRequest.js';
 import { UnauthenticatedError } from '../errors/unauthenticated.js';
 import { StatusCodes } from 'http-status-codes';
-
-const prisma = new PrismaClient();
 
 export const login = async (req, res) => {
   const { username, pass } = req.body;

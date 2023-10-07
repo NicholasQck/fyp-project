@@ -1,9 +1,7 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from '../prisma/client.js';
 import { StatusCodes } from 'http-status-codes';
 import bcrypt from 'bcrypt';
 import { BadRequestError } from '../errors/badRequest.js';
-
-const prisma = new PrismaClient();
 
 export const getAllUsers = async (req, res) => {
   res.send('get all users');

@@ -1,7 +1,5 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from './client.js';
 import { roles, titles } from '../data/seedData.js';
-
-const prisma = new PrismaClient();
 
 const main = async () => {
   await prisma.title.createMany({

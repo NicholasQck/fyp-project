@@ -1,7 +1,5 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from '../prisma/client.js';
 import { StatusCodes } from 'http-status-codes';
-
-const prisma = new PrismaClient();
 
 export const getAllTitles = async (req, res) => {
   const titles = await prisma.title.findMany({
