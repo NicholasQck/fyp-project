@@ -12,7 +12,6 @@ export const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initState);
 
   const setError = (show = false, msg = '') => {
-    // console.log('test');
     dispatch({ type: 'SET_ERROR', payload: { show, msg } });
   };
 
