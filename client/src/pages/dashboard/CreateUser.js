@@ -98,8 +98,6 @@ const CreateUser = () => {
     return <Loading />;
   }
 
-  console.log(roles);
-
   return (
     <>
       {!sessionToken && <Modal />}
