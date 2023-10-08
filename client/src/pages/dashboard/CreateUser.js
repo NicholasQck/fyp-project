@@ -98,6 +98,8 @@ const CreateUser = () => {
     return <Loading />;
   }
 
+  console.log(roles);
+
   return (
     <>
       {!sessionToken && <Modal />}
@@ -120,7 +122,7 @@ const CreateUser = () => {
 
               <label htmlFor="roleID">Role</label>
               <select id="roleID" name="roleID" onChange={handleChange}>
-                {roles.toReversed().map((role) => {
+                {roles.map((role) => {
                   return (
                     <option key={role.roleID} value={role.roleID}>
                       {role.roleName}

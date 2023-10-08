@@ -39,7 +39,7 @@ export const deleteUser = async (req, res) => {
 export const getAllRoles = async (req, res) => {
   const roles = await prisma.role.findMany({
     orderBy: {
-      roleID: 'asc',
+      roleID: 'desc',
     },
   });
   res.status(StatusCodes.OK).json({ roles });
