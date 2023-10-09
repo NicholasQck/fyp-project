@@ -7,10 +7,10 @@ const reducer = (state, action) => {
   }
 
   if (action.type === 'SET_USER') {
-    const { decodedUser, token } = action.payload;
+    const { decodedUser } = action.payload;
     return {
       ...state,
-      user: { ...decodedUser, token },
+      user: { ...decodedUser },
     };
   }
 

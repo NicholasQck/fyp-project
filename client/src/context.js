@@ -17,8 +17,7 @@ export const AppProvider = ({ children }) => {
 
   const login = (token) => {
     const decodedUser = jwt_decode(token);
-    sessionStorage.setItem('user', JSON.stringify({ token }));
-    dispatch({ type: 'SET_USER', payload: { decodedUser, token } });
+    dispatch({ type: 'SET_USER', payload: { decodedUser } });
   };
 
   const logout = () => {

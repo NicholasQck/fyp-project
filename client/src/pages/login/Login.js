@@ -37,6 +37,7 @@ const Login = () => {
         const res = await axios.post('/api/auth/login', inputData);
         const { token } = res.data;
         login(token);
+        sessionStorage.setItem('user', JSON.stringify({ token }));
         setInputData({ username: '', pass: '' });
       } catch (error) {
         setErrorMsg({ show: true, msg: error.response.data.msg });
