@@ -3,12 +3,11 @@ import { StatusCodes } from 'http-status-codes';
 
 export const getAllTitles = async (req, res) => {
   const titles = await prisma.title.findMany({
+    orderBy: {
+      proposedBy: 'asc',
+    },
     include: {
       supervisor: {
-        // doesn't work
-        // orderBy: {
-        //   firstName: 'asc',
-        // },
         select: {
           firstName: true,
           lastName: true,
