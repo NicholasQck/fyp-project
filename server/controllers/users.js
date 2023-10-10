@@ -25,7 +25,9 @@ export const createUser = async (req, res) => {
     },
   });
 
-  res.status(StatusCodes.CREATED).json({ user });
+  res
+    .status(StatusCodes.CREATED)
+    .json({ user, msg: 'User created successfully' });
 };
 
 export const updateUser = async (req, res) => {
