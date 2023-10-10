@@ -11,7 +11,7 @@ import logo from '../../assets/images/logo.png';
 import { loginFormValidation } from '../../utils/formValidation';
 
 // import components
-import ErrorMsg from '../../components/ErrorMsg';
+import AlertMsg from '../../components/AlertMsg';
 import { validateSession } from '../../utils/sessionValidation';
 
 const Login = () => {
@@ -20,7 +20,11 @@ const Login = () => {
     username: '',
     pass: '',
   });
-  const [errorMsg, setErrorMsg] = useState({ show: false, msg: '' });
+  const [alertMsg, setAlertMsg] = useState({
+    show: false,
+    type: 'success',
+    msg: '',
+  });
   const sessionToken = validateSession();
   const usernameRef = useRef();
 
@@ -30,7 +34,7 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const validInput = loginFormValidation(inputData, setErrorMsg);
+    const validInput = loginFormValidation(inputData, setAlertMsg);
 
     if (validInput) {
       try {
@@ -40,7 +44,7 @@ const Login = () => {
         sessionStorage.setItem('user', JSON.stringify({ token }));
         setInputData({ username: '', pass: '' });
       } catch (error) {
-        setErrorMsg({ show: true, msg: error.response.data.msg });
+        setAlertMsg({ show: true, type: 'fail', msg: error.response.data.msg });
         console.log(error.response.data.msg);
       }
     }
@@ -91,8 +95,12 @@ const Login = () => {
               >
                 Login
               </button>
-              {errorMsg.show && (
-                <ErrorMsg msg={errorMsg.msg} setErrorMsg={setErrorMsg} />
+              {alertMsg.show && (
+                <AlertMsg
+                  type={alertMsg.type}
+                  msg={alertMsg.msg}
+                  setAlertMsg={setAlertMsg}
+                />
               )}
             </div>
           </form>

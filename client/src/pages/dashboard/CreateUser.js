@@ -12,13 +12,17 @@ import { validateSession } from '../../utils/sessionValidation';
 //import components
 import Loading from '../../components/Loading';
 import Navbar from '../../components/Navbar';
-import ErrorMsg from '../../components/ErrorMsg';
+import AlertMsg from '../../components/AlertMsg';
 import Modal from '../../components/Modal';
 
 const CreateUser = () => {
   // const { checkSession } = useGlobalContext();
   const [loading, setLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState({ show: false, msg: '' });
+  const [alertMsg, setAlertMsg] = useState({
+    show: false,
+    type: 'success',
+    msg: '',
+  });
   const [roles, setRoles] = useState([]);
   const [formData, setFormData] = useState({
     userID: '',
@@ -52,7 +56,7 @@ const CreateUser = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const validInput = userFormValidation(formData, setErrorMsg);
+    const validInput = userFormValidation(formData, setAlertMsg);
 
     if (validInput) {
       try {
@@ -70,13 +74,22 @@ const CreateUser = () => {
         });
         // remove when done
         console.log(res);
+        setAlertMsg({ show: true, type: 'success', msg: res.data.msg });
       } catch (error) {
         if (error.response.data.errors) {
           // handle server validation middleware errors
-          setErrorMsg({ show: true, msg: error.response.data.errors[0].msg });
+          setAlertMsg({
+            show: true,
+            type: 'fail',
+            msg: error.response.data.errors[0].msg,
+          });
         } else {
           // handle server custom errors
-          setErrorMsg({ show: true, msg: error.response.data.msg });
+          setAlertMsg({
+            show: true,
+            type: 'fail',
+            msg: error.response.data.msg,
+          });
         }
         console.log(error.response);
         console.log(error.response.data.errors);
@@ -168,8 +181,12 @@ const CreateUser = () => {
               <button type="submit" className="btn-primary">
                 Create
               </button>
-              {errorMsg.show && (
-                <ErrorMsg msg={errorMsg.msg} setErrorMsg={setErrorMsg} />
+              {alertMsg.show && (
+                <AlertMsg
+                  type={alertMsg.type}
+                  msg={alertMsg.msg}
+                  setAlertMsg={setAlertMsg}
+                />
               )}
             </div>
           </form>
