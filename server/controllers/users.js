@@ -25,7 +25,7 @@ export const createUser = async (req, res) => {
     },
   });
 
-  res.status(StatusCodes.CREATED).json({ data: user });
+  res.status(StatusCodes.CREATED).json({ user });
 };
 
 export const updateUser = async (req, res) => {
