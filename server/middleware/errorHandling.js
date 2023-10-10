@@ -10,8 +10,7 @@ export const errorHandlingMiddleware = (err, req, res, next) => {
   if (err instanceof Prisma.PrismaClientKnownRequestError) {
     if (err.code === 'P2002') {
       customError.statusCode = StatusCodes.CONFLICT;
-      customError.msg =
-        'The User ID already exists, please provide another unique User ID';
+      customError.msg = 'Data already exist in database';
     }
   }
 
