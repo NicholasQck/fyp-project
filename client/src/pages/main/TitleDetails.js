@@ -14,20 +14,16 @@ import { validateSession } from '../../utils/sessionValidation';
 
 const TitleDetails = () => {
   const location = useLocation();
+  const sessionToken = validateSession();
 
   if (!location.state) {
     return <Navigate to="/titles" />;
   }
 
-  const {
-    titleID,
-    titleName,
-    /*availability,*/ supervisor,
-    fieldArea,
-    titleDesc,
-  } = location.state;
+  const { title } = location.state;
 
-  const sessionToken = validateSession();
+  const { titleID, titleName, availability, supervisor, fieldArea, titleDesc } =
+    title;
 
   return (
     <>
@@ -47,8 +43,17 @@ const TitleDetails = () => {
             <button className="learn-more-btn light-blue-btn">
               Learn more
             </button>
-            <Link to={`/saf/${titleID}`}>
-              <button className="submit-saf-btn dark-blue-btn">
+            <Link
+              to={`/saf/${titleID}`}
+              state={{ title }}
+              style={{
+                pointerEvents: availability ? '' : 'none',
+              }}
+            >
+              <button
+                className="submit-saf-btn dark-blue-btn"
+                style={{ backgroundColor: availability ? '' : '#808080' }}
+              >
                 Submit SAF
               </button>
             </Link>

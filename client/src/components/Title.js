@@ -9,7 +9,7 @@ const Title = ({ title }) => {
   return (
     <Link
       to={`/titles/${titleID}`}
-      state={title}
+      state={{ title }}
       className="disable-default-link"
     >
       <article className="single-title-article">

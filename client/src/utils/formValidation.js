@@ -2,7 +2,11 @@ export const userFormValidation = (userInput, setError) => {
   const { userID, roleID, fName, lName, password, passwordConfirm } = userInput;
 
   if (!userID || !roleID || !fName || !lName || !password || !passwordConfirm) {
-    setError({ show: true, msg: 'Please ensure all fields are provided' });
+    setError({
+      show: true,
+      type: 'fail',
+      msg: 'Please ensure all fields are provided',
+    });
     return false;
   }
 
@@ -21,6 +25,7 @@ export const userFormValidation = (userInput, setError) => {
   if (!userIDValid) {
     setError({
       show: true,
+      type: 'fail',
       msg: 'User ID should only contain alphanumeric characters',
     });
     return false;
@@ -29,6 +34,7 @@ export const userFormValidation = (userInput, setError) => {
   if (!fNameValid) {
     setError({
       show: true,
+      type: 'fail',
       msg: 'First name should not contain special characters',
     });
     return false;
@@ -37,26 +43,28 @@ export const userFormValidation = (userInput, setError) => {
   if (!lNameValid) {
     setError({
       show: true,
+      type: 'fail',
       msg: 'Last name should not contain special characters',
     });
     return false;
   }
 
   if (!roleIDValid) {
-    setError({ show: true, msg: 'Please select a proper role' });
+    setError({ show: true, type: 'fail', msg: 'Please select a proper role' });
     return false;
   }
 
   if (!passwordValid) {
     setError({
       show: true,
+      type: 'fail',
       msg: 'Password should be 8 - 16 characters in length',
     });
     return false;
   }
 
   if (password !== passwordConfirm) {
-    setError({ show: true, msg: 'Passwords do not match' });
+    setError({ show: true, type: 'fail', msg: 'Passwords do not match' });
     return false;
   }
 
@@ -67,7 +75,11 @@ export const loginFormValidation = (loginData, setError) => {
   const { username, pass } = loginData;
 
   if (!username || !pass) {
-    setError({ show: true, msg: 'Please ensure all fields are provided' });
+    setError({
+      show: true,
+      type: 'fail',
+      msg: 'Please ensure all fields are provided',
+    });
     return false;
   }
 
@@ -77,12 +89,84 @@ export const loginFormValidation = (loginData, setError) => {
   );
 
   if (!userIDValid) {
-    setError({ show: true, msg: 'Please enter a valid username' });
+    setError({
+      show: true,
+      type: 'fail',
+      msg: 'Please enter a valid username',
+    });
     return false;
   }
 
   if (!passwordValid) {
-    setError({ show: true, msg: 'Please enter a valid password' });
+    setError({
+      show: true,
+      type: 'fail',
+      msg: 'Please enter a valid password',
+    });
+    return false;
+  }
+
+  return true;
+};
+
+export const safFormValidation = (safData, setError) => {
+  const { studentID, titleID, course, descBrief, hrPerWeek, priorSubmission } =
+    safData;
+
+  if (
+    !studentID ||
+    !titleID ||
+    !course ||
+    !descBrief ||
+    !hrPerWeek ||
+    !priorSubmission
+  ) {
+    setError({
+      show: true,
+      type: 'fail',
+      msg: 'Please ensure all fields are provided',
+    });
+    return false;
+  }
+
+  const courseValid = course.match(/^[a-zA-Z()\s]*$/);
+  const descBriefValid = descBrief.match(/^[\w\s.,!?'"()-]*$/);
+  const hrPerWeekValid = hrPerWeek.match(/^[0-9]+$/);
+  const priorSubmissionValid = priorSubmission.match(/^[0-9]+$/);
+
+  if (!courseValid) {
+    setError({
+      show: true,
+      type: 'fail',
+      msg: 'Please provide a valid course name',
+    });
+    return false;
+  }
+
+  if (!descBriefValid) {
+    setError({
+      show: true,
+      type: 'fail',
+      msg: 'Descriptions should not contain special characters',
+    });
+    return false;
+  }
+
+  if (!hrPerWeekValid) {
+    setError({
+      show: true,
+      type: 'fail',
+      msg: 'Please provide a valid number',
+    });
+    return false;
+  }
+
+  if (!priorSubmissionValid) {
+    setError({
+      show: true,
+      type: 'fail',
+      msg: 'Please provide a valid number',
+    });
     return false;
   }
 

@@ -1,0 +1,93 @@
+.saf-article {
+  background-color: #1d2023;
+  min-width: 65vw;
+  max-width: 65vh;
+  width: fit-content;
+  height: fit-content;
+  margin: auto;
+}
+
+.saf-form {
+  padding: 20px 15px 30px;
+}
+
+.form-control-saf {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-control-saf h1 {
+  color: #1463f3;
+  font-size: 2.2rem;
+  margin-bottom: 40px;
+}
+
+.form-control-saf p {
+  font-size: 1.1rem;
+}
+
+.saf-instructions {
+  margin-bottom: 40px;
+}
+
+.form-control-saf label {
+  font-size: 1.1rem;
+  margin-left: 3px;
+  margin-bottom: 10px;
+}
+
+.form-control-saf input {
+  height: 30px;
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+  border-color: transparent;
+  background-color: #ccd0d8;
+}
+
+.form-control-saf input:disabled {
+  cursor: not-allowed;
+}
+
+#course:hover {
+  cursor: pointer;
+}
+
+#projectDesc:hover {
+  cursor: text;
+}
+
+#hrPerWeek:hover {
+  cursor: pointer;
+}
+
+#priorSubmission:hover {
+  cursor: pointer;
+}
+
+.form-control-saf textarea {
+  resize: none;
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+  border-color: transparent;
+  background-color: #ccd0d8;
+}
+
+#hrPerWeek {
+  width: 5%;
+}
+
+#priorSubmission {
+  width: 5%;
+  margin-right: 5px;
+}
+
+.flex-row-container {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+}
+
+.saf-submit-btn {
+  margin-top: 20px;
+  padding: 20px 25px;
+}

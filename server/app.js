@@ -8,6 +8,7 @@ const app = express();
 import { authRouter } from './routes/authRoutes.js';
 import { titlesRouter } from './routes/titleRoutes.js';
 import { usersRouter } from './routes/userRoutes.js';
+import { safRouter } from './routes/safRoutes.js';
 
 // import custom middleware
 import { errorHandlingMiddleware } from './middleware/errorHandling.js';
@@ -26,6 +27,7 @@ app.get('/', (req, res) => {
 app.use('/api/auth', authRouter);
 app.use('/api/titles', authUser, titlesRouter);
 app.use('/api/users', authUser, usersRouter);
+app.use('/api/saf', authUser, safRouter);
 
 // use custom middleware
 app.use(notFoundMiddleware);
