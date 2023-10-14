@@ -12,7 +12,6 @@ const Navbar = () => {
     <nav>
       <div className="nav-center">
         <div className="main-logo">
-          {/* add a link component */}
           <Link to={'/titles'} className="disable-default-link">
             <img src={logo} alt="Logo" />
           </Link>
@@ -36,10 +35,7 @@ const Navbar = () => {
             </li>
           </Link>
 
-          <Link
-            to={'/users/create_user'}
-            className="disable-default-link link-flex"
-          >
+          <Link to={'/dashboard'} className="disable-default-link link-flex">
             <li className="nav-list-item">
               <div className="round-profile">
                 <p>S</p>

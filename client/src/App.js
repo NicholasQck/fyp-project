@@ -6,6 +6,7 @@ import Login from './pages/login/Login';
 import Titles from './pages/main/Titles';
 import TitleDetails from './pages/main/TitleDetails';
 import SAF from './pages/main/SAF';
+import Dashboard from './pages/dashboard/Dashboard';
 import CreateUser from './pages/dashboard/CreateUser';
 import Error from './pages/error/Error';
 
@@ -21,6 +22,7 @@ const App = () => {
           <Route path="/titles" element={<Titles />} />
           <Route path="/titles/:id" element={<TitleDetails />} />
           <Route path="/saf/:title_id" element={<SAF />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/users/create_user" element={<CreateUser />} />
         </Route>
         <Route path="*" element={<Error />} />
