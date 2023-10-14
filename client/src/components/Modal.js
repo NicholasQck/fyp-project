@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGlobalContext } from '../context';
 
-const Modal = () => {
+const Modal = ({ msg }) => {
   const { logout } = useGlobalContext();
   const modalRef = useRef();
   const navigate = useNavigate();
@@ -19,7 +19,7 @@ const Modal = () => {
 
   return (
     <dialog ref={modalRef} onCancel={handleClick} className="modal">
-      <p>Session expired, please login again</p>
+      <p>{msg || 'Session expired, please login again'}</p>
       <button onClick={handleClick}>OK</button>
     </dialog>
   );
