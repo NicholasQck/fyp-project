@@ -63,6 +63,7 @@
 }
 
 .function-bar-item {
+  user-select: none;
   transition: transform 0.3s ease;
 }
 
