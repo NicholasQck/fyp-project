@@ -1,5 +1,5 @@
 import React from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 
 // import components
@@ -20,7 +20,6 @@ const PrivateRoutes = () => {
     }
   }
   console.log('location');
-  useLocation();
 
   return user ? <Outlet /> : <Modal />;
 };
