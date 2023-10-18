@@ -40,49 +40,48 @@ const SafSubmitted = ({ userID, roleID, token }) => {
   }, [userID, token]);
   // console.log(saf);
 
-  if (loading) {
-    return <Loading />;
-  }
-
   return (
-    <div className="saf-submitted-container">
-      {saf.length === 0 ? (
-        <div
-          style={{
-            textAlign: 'center',
-            fontSize: '1.3rem',
-          }}
-        >
-          No submissions at the moment...
-        </div>
-      ) : (
-        saf.map((saf) => {
-          const { safID, approved, fypTitle } = saf;
-          // console.log(saf);
-          return (
-            <Link
-              to={`/saf/modify/${safID}`}
-              state={{
-                saf,
-                isSupervisor: roleID === 2 || roleID === 1 ? true : false,
-                isStudent: roleID === 3 ? true : false,
-              }}
-              key={safID}
-              className="disable-default-link"
-            >
-              <article key={safID} className="saf-item">
-                <p className="saf-item-title">{fypTitle.titleName}</p>
-                {approved ? (
-                  <p className="approved">Approved</p>
-                ) : (
-                  <p className="pending">Pending</p>
-                )}
-              </article>
-            </Link>
-          );
-        })
-      )}
-    </div>
+    <>
+      {loading && <Loading />}
+      <div className="saf-submitted-container">
+        {saf.length === 0 ? (
+          <div
+            style={{
+              textAlign: 'center',
+              fontSize: '1.3rem',
+            }}
+          >
+            No submissions at the moment...
+          </div>
+        ) : (
+          saf.map((saf) => {
+            const { safID, approved, fypTitle } = saf;
+            // console.log(saf);
+            return (
+              <Link
+                to={`/saf/modify/${safID}`}
+                state={{
+                  saf,
+                  isSupervisor: roleID === 2 || roleID === 1 ? true : false,
+                  isStudent: roleID === 3 ? true : false,
+                }}
+                key={safID}
+                className="disable-default-link"
+              >
+                <article key={safID} className="saf-item">
+                  <p className="saf-item-title">{fypTitle.titleName}</p>
+                  {approved ? (
+                    <p className="approved">Approved</p>
+                  ) : (
+                    <p className="pending">Pending</p>
+                  )}
+                </article>
+              </Link>
+            );
+          })
+        )}
+      </div>
+    </>
   );
 };
 
