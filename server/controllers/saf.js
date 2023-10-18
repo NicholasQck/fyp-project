@@ -6,15 +6,15 @@ export const getAllSAF = async (req, res) => {
 };
 
 export const getSAF = async (req, res) => {
-  const { id } = req.params;
-  const studentID = id.match(/^\d{8}$/);
-  const lecturerID = id.match(/^[a-z]+$/);
+  const { user_id } = req.query;
+  const studentID = user_id.match(/^\d{8}$/);
+  const lecturerID = user_id.match(/^[a-z]+$/);
   let saf;
 
   if (studentID) {
     // find saf for student
     saf = await prisma.sAF.findUnique({
-      where: { studentID: id },
+      where: { studentID: user_id },
       include: {
         fypTitle: {
           include: {
@@ -38,7 +38,7 @@ export const getSAF = async (req, res) => {
     // find saf for lecturers
     saf = await prisma.sAF.findMany({
       where: {
-        fypTitle: { proposedBy: id },
+        fypTitle: { proposedBy: user_id },
       },
       include: {
         fypTitle: {

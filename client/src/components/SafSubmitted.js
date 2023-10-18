@@ -18,7 +18,7 @@ const SafSubmitted = ({ userID, roleID, token }) => {
     const fetchSaf = async () => {
       try {
         setLoading(true);
-        const res = await axios.get(`/api/saf/${userID}`, {
+        const res = await axios.get(`/api/saf?user_id=${userID}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
