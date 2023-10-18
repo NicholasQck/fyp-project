@@ -16,9 +16,10 @@ const TitleList = ({ titles }) => {
           <Link
             to={`/titles/${titleID}`}
             state={{ title }}
+            key={titleID}
             className="disable-default-link"
           >
-            <Title key={title.titleID} title={title} />
+            <Title title={title} />
           </Link>
         );
       })}
