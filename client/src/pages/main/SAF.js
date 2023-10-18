@@ -159,7 +159,8 @@ const SAF = () => {
       console.log(error);
     }
   };
-  console.log(safDetails);
+  // console.log(safDetails);
+
   return (
     <>
       {!sessionToken && <Modal />}

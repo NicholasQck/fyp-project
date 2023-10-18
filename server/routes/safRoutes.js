@@ -11,5 +11,6 @@ import {
 
 export const safRouter = express.Router();
 
-safRouter.route('/').get(getSAF).get(getAllSAF).post(createSAF);
+safRouter.route('/').get(getAllSAF).post(createSAF);
+safRouter.route('/user').get(getSAF);
 safRouter.route('/:id').patch(updateSAF).put(updateSAF).delete(deleteSAF);

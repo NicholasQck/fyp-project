@@ -18,16 +18,16 @@ const SafSubmitted = ({ userID, roleID, token }) => {
     const fetchSaf = async () => {
       try {
         setLoading(true);
-        const res = await axios.get(`/api/saf?user_id=${userID}`, {
+        const res = await axios.get(`/api/saf/user?user_id=${userID}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        if (res.data === null) {
+        if (res.data.saf === null) {
           setSaf([]);
-        } else if (Array.isArray(res.data) && res.data.length > 0) {
-          setSaf(res.data);
-        } else if (typeof res.data === 'object') {
-          setSaf([res.data]);
+        } else if (Array.isArray(res.data.saf) && res.data.saf.length > 0) {
+          setSaf(res.data.saf);
+        } else if (typeof res.data.saf === 'object') {
+          setSaf([res.data.saf]);
         }
         setLoading(false);
         // console.log(res);

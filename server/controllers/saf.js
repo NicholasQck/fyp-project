@@ -65,7 +65,7 @@ export const getSAF = async (req, res) => {
     }
   }
 
-  res.status(StatusCodes.OK).json(saf);
+  res.status(StatusCodes.OK).json({ saf });
 };
 
 export const createSAF = async (req, res) => {
@@ -87,11 +87,10 @@ export const createSAF = async (req, res) => {
   });
   res
     .status(StatusCodes.CREATED)
-    .json({ data: { saf, titleUpdate }, msg: 'SAF submitted' });
+    .json({ saf, titleUpdate, msg: 'SAF submitted' });
 };
 
 export const updateSAF = async (req, res) => {
-  const method = req.method;
   const { id } = req.params;
   const { studentID, titleID, course, descBrief, hrPerWeek, priorSubmission } =
     req.body;
@@ -120,7 +119,7 @@ export const updateSAF = async (req, res) => {
     });
     msg = 'SAF approved';
   }
-  res.status(StatusCodes.OK).json({ method, saf, msg });
+  res.status(StatusCodes.OK).json({ saf, msg });
 };
 
 export const deleteSAF = async (req, res) => {
