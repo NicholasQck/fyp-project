@@ -77,3 +77,40 @@
   margin: auto;
   /* border: 1px solid white; */
 }
+
+.saf-submitted-container {
+  background-color: #1d2023;
+  padding: 15px 20px;
+  min-height: 10rem;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  /* border: 1px solid white; */
+}
+
+.saf-item {
+  background-color: #84a4fc;
+  height: 100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 5px 0px;
+  padding: 0px 10px;
+}
+
+.saf-item p {
+  font-size: 1.3rem;
+}
+
+.saf-item-title {
+  color: black;
+}
+
+.approved {
+  color: #1463f3;
+}
+
+.pending {
+  color: #ccd0d8;
+}

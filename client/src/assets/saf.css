@@ -48,20 +48,20 @@
   cursor: not-allowed;
 }
 
-#course:hover {
+.form-control-saf select:hover {
   cursor: pointer;
 }
 
-#projectDesc:hover {
+.form-control-saf select:disabled {
+  cursor: not-allowed;
+}
+
+.form-control-saf textarea:hover {
   cursor: text;
 }
 
-#hrPerWeek:hover {
-  cursor: pointer;
-}
-
-#priorSubmission:hover {
-  cursor: pointer;
+.form-control-saf textarea:disabled {
+  cursor: not-allowed;
 }
 
 .form-control-saf textarea {
@@ -87,7 +87,7 @@
   align-items: baseline;
 }
 
-.saf-submit-btn {
+.saf-btn {
   margin-top: 20px;
   padding: 20px 25px;
 }

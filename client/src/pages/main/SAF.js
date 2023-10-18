@@ -30,13 +30,29 @@ const SAF = () => {
   const sessionToken = validateSession();
   const user = getUserData(sessionToken);
   const { userID, fName, lName } = user || {};
+  // pass isAdmin through Link state for coordinator
+  const { saf, isStudent, isSupervisor, isAdmin } = location.state || {};
+  const {
+    safID,
+    studentID,
+    titleID,
+    course,
+    descBrief,
+    hrPerWeek,
+    priorSubmission,
+    approved,
+    student,
+    fypTitle,
+  } = saf || {};
+  const { title } = location.state || {};
+  const { titleName, supervisor } = title || {};
   const [safDetails, setSafDetails] = useState({
-    studentID: userID || '',
-    titleID: title_id,
-    course: '',
-    descBrief: '',
-    hrPerWeek: '1',
-    priorSubmission: '1',
+    studentID: studentID || userID || '',
+    titleID: titleID || title_id,
+    course: course || '',
+    descBrief: descBrief || '',
+    hrPerWeek: hrPerWeek ? `${hrPerWeek}` : '1',
+    priorSubmission: priorSubmission ? `${priorSubmission}` : '1',
   });
   const [alertMsg, setAlertMsg] = useState({
     show: false,
@@ -44,15 +60,22 @@ const SAF = () => {
     msg: '',
   });
 
-  if (!location.state) {
-    return <Navigate to="/titles" />;
-  }
-
-  const { title } = location.state;
-  const { titleName, supervisor } = title;
-
+  // console.log(safDetails);
   const handleChange = (e) => {
     setSafDetails({ ...safDetails, [e.target.name]: e.target.value });
+  };
+
+  const checkEdit = () => {
+    if (
+      course === safDetails.course &&
+      descBrief === safDetails.descBrief &&
+      hrPerWeek.toString() === safDetails.hrPerWeek &&
+      priorSubmission.toString() === safDetails.priorSubmission
+    ) {
+      return false;
+    } else {
+      return true;
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -63,22 +86,84 @@ const SAF = () => {
         const res = await axios.post('/api/saf', safDetails, {
           headers: { Authorization: `Bearer ${sessionToken}` },
         });
-        console.log(res);
         setAlertMsg({ show: true, type: 'success', msg: res.data.msg });
         setTimeout(() => {
           navigate('/');
         }, 2000);
+        console.log(res);
       } catch (error) {
         const errMsg = error.response.data.msg;
-        console.log(error);
         setAlertMsg({ show: true, type: 'fail', msg: errMsg });
+        console.log(error);
       }
     }
   };
 
+  const handleEdit = async (e) => {
+    e.preventDefault();
+    const isEdited = checkEdit();
+    if (!isEdited) {
+      setAlertMsg({ show: true, type: 'fail', msg: 'No changes made' });
+    } else {
+      const validInput = safFormValidation(safDetails, setAlertMsg);
+      if (validInput) {
+        try {
+          const res = await axios.put(`/api/saf/${safID}`, safDetails, {
+            headers: { Authorization: `Bearer ${sessionToken}` },
+          });
+          setAlertMsg({ show: true, type: 'success', msg: res.data.msg });
+          setTimeout(() => {
+            navigate('/dashboard');
+          }, 2000);
+          console.log(res);
+        } catch (error) {
+          const errMsg = error.response.data.msg;
+          setAlertMsg({ show: true, type: 'fail', msg: errMsg });
+          console.log(error);
+        }
+      }
+    }
+  };
+
+  const handleApprove = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.patch(
+        `/api/saf/${safID}`,
+        { approved: true },
+        { headers: { Authorization: `Bearer ${sessionToken}` } }
+      );
+      setAlertMsg({ show: true, type: 'success', msg: res.data.msg });
+      setTimeout(() => {
+        navigate('/dashboard');
+      }, 2000);
+      console.log(res);
+    } catch (error) {
+      const errMsg = error.response.data.msg;
+      setAlertMsg({ show: true, type: 'fail', msg: errMsg });
+      console.log(error);
+    }
+  };
+
+  const handleDelete = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.delete(`/api/saf/${safID}`, {
+        headers: { Authorization: `Bearer ${sessionToken}` },
+      });
+      setAlertMsg({ show: true, type: 'success', msg: res.data.msg });
+      console.log(res);
+    } catch (error) {
+      const errMsg = error.response.data.msg;
+      setAlertMsg({ show: true, type: 'fail', msg: errMsg });
+      console.log(error);
+    }
+  };
+  console.log(safDetails);
   return (
     <>
       {!sessionToken && <Modal />}
+      {!location.state && <Navigate to="/titles" />}
       <Navbar />
       <main>
         <article className="saf-article">
@@ -100,7 +185,11 @@ const SAF = () => {
                 type="text"
                 id="studentName"
                 name="studentName"
-                value={(fName || '') + ' ' + (lName || '')}
+                value={
+                  (student?.firstName || fName || '') +
+                  ' ' +
+                  (student?.lastName || lName || '')
+                }
                 disabled
               />
 
@@ -109,7 +198,7 @@ const SAF = () => {
                 type="text"
                 id="studentID"
                 name="studentID"
-                value={userID}
+                value={studentID || userID}
                 disabled
               />
 
@@ -118,17 +207,36 @@ const SAF = () => {
                 type="text"
                 id="supervisorName"
                 name="supervisorName"
-                value={supervisor.firstName + ' ' + supervisor.lastName}
+                value={
+                  (fypTitle?.supervisor.firstName ||
+                    supervisor?.firstName ||
+                    '') +
+                  ' ' +
+                  (fypTitle?.supervisor.lastName || supervisor?.lastName || '')
+                }
                 disabled
               />
 
               <label htmlFor="course">Course of Study</label>
-              <select id="course" name="course" onChange={handleChange}>
-                <option>(Please select a course)</option>
-                {courses.map((course, index) => {
+              <select
+                id="course"
+                name="course"
+                onChange={handleChange}
+                defaultValue={course && `${course}`}
+                disabled={isAdmin || isSupervisor || approved ? true : false}
+              >
+                <option value={''}>&#40;Please select a course&#41;</option>
+                {courses.map((courseName, index) => {
+                  if (courseName === course) {
+                    return (
+                      <option key={index} value={courseName}>
+                        {courseName}
+                      </option>
+                    );
+                  }
                   return (
-                    <option key={index} value={course}>
-                      {course}
+                    <option key={index} value={courseName}>
+                      {courseName}
                     </option>
                   );
                 })}
@@ -139,7 +247,7 @@ const SAF = () => {
                 type="text"
                 id="titleName"
                 name="titleName"
-                value={titleName}
+                value={fypTitle?.titleName || titleName}
                 disabled
               />
 
@@ -151,14 +259,29 @@ const SAF = () => {
                 id="descBrief"
                 cols="30"
                 rows="5"
+                value={safDetails.descBrief}
                 onChange={handleChange}
+                disabled={isAdmin || isSupervisor || approved ? true : false}
               ></textarea>
 
               <label htmlFor="hrPerWeek">
                 Hour&#40;s&#41; per week dedicated for the project
               </label>
-              <select name="hrPerWeek" id="hrPerWeek" onChange={handleChange}>
+              <select
+                name="hrPerWeek"
+                id="hrPerWeek"
+                onChange={handleChange}
+                defaultValue={hrPerWeek && hrPerWeek}
+                disabled={isAdmin || isSupervisor || approved ? true : false}
+              >
                 {Array.from({ length: 20 }).map((_, index) => {
+                  if (index + 1 === hrPerWeek) {
+                    return (
+                      <option key={index} value={index + 1}>
+                        {index + 1}
+                      </option>
+                    );
+                  }
                   return (
                     <option key={index} value={index + 1}>
                       {index + 1}
@@ -176,8 +299,17 @@ const SAF = () => {
                   name="priorSubmission"
                   id="priorSubmission"
                   onChange={handleChange}
+                  defaultValue={priorSubmission && priorSubmission}
+                  disabled={isAdmin || isSupervisor || approved ? true : false}
                 >
                   {Array.from({ length: 20 }).map((_, index) => {
+                    if (index + 1 === priorSubmission) {
+                      return (
+                        <option key={index} value={index + 1}>
+                          {index + 1}
+                        </option>
+                      );
+                    }
                     return (
                       <option key={index} value={index + 1}>
                         {index + 1}
@@ -187,13 +319,54 @@ const SAF = () => {
                 </select>
                 <p>day&#40;s&#41;</p>
               </div>
-              <button
-                type="submit"
-                className="saf-submit-btn dark-blue-btn "
-                onClick={handleSubmit}
-              >
-                Submit
-              </button>
+              {title && (
+                <button
+                  type="submit"
+                  className="saf-btn dark-blue-btn "
+                  onClick={handleSubmit}
+                >
+                  Submit
+                </button>
+              )}
+
+              {isSupervisor && (
+                <button
+                  type="submit"
+                  className="saf-btn dark-blue-btn "
+                  style={{
+                    pointerEvents: approved ? 'none' : '',
+                    backgroundColor: approved ? '#808080' : '',
+                  }}
+                  onClick={handleApprove}
+                >
+                  {approved ? 'Approved' : 'Approve'}
+                </button>
+              )}
+
+              {isAdmin && (
+                <button
+                  type="submit"
+                  className="saf-btn dark-blue-btn "
+                  onClick={handleDelete}
+                >
+                  Delete
+                </button>
+              )}
+
+              {isStudent && (
+                <button
+                  type="submit"
+                  className="saf-btn dark-blue-btn "
+                  style={{
+                    pointerEvents: approved ? 'none' : '',
+                    backgroundColor: approved ? '#808080' : '',
+                  }}
+                  onClick={handleEdit}
+                >
+                  {approved ? 'Approved' : 'Edit'}
+                </button>
+              )}
+
               {alertMsg.show && (
                 <AlertMsg
                   type={alertMsg.type}

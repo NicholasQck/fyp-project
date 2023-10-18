@@ -6,7 +6,66 @@ export const getAllSAF = async (req, res) => {
 };
 
 export const getSAF = async (req, res) => {
-  res.send('get one SAF');
+  const { id } = req.params;
+  const studentID = id.match(/^\d{8}$/);
+  const lecturerID = id.match(/^[a-z]+$/);
+  let saf;
+
+  if (studentID) {
+    // find saf for student
+    saf = await prisma.sAF.findUnique({
+      where: { studentID: id },
+      include: {
+        fypTitle: {
+          include: {
+            supervisor: {
+              select: {
+                firstName: true,
+                lastName: true,
+              },
+            },
+          },
+        },
+        student: {
+          select: {
+            firstName: true,
+            lastName: true,
+          },
+        },
+      },
+    });
+  } else if (lecturerID) {
+    // find saf for lecturers
+    saf = await prisma.sAF.findMany({
+      where: {
+        fypTitle: { proposedBy: id },
+      },
+      include: {
+        fypTitle: {
+          include: {
+            supervisor: {
+              select: {
+                firstName: true,
+                lastName: true,
+              },
+            },
+          },
+        },
+        student: {
+          select: {
+            firstName: true,
+            lastName: true,
+          },
+        },
+      },
+    });
+
+    if (saf.length === 0) {
+      saf = null;
+    }
+  }
+
+  res.status(StatusCodes.OK).json(saf);
 };
 
 export const createSAF = async (req, res) => {
@@ -32,7 +91,36 @@ export const createSAF = async (req, res) => {
 };
 
 export const updateSAF = async (req, res) => {
-  res.send('update SAF');
+  const method = req.method;
+  const { id } = req.params;
+  const { studentID, titleID, course, descBrief, hrPerWeek, priorSubmission } =
+    req.body;
+  let saf;
+  let msg;
+
+  if (method === 'PUT') {
+    // do the edit saf logic
+    saf = await prisma.sAF.update({
+      where: { safID: id },
+      data: {
+        studentID,
+        titleID,
+        course,
+        descBrief,
+        hrPerWeek: parseInt(hrPerWeek),
+        priorSubmission: parseInt(priorSubmission),
+      },
+    });
+    msg = 'SAF updated';
+  } else if (method === 'PATCH') {
+    // do the approve saf logic
+    saf = await prisma.sAF.update({
+      where: { safID: id },
+      data: { approved: true },
+    });
+    msg = 'SAF approved';
+  }
+  res.status(StatusCodes.OK).json({ method, saf, msg });
 };
 
 export const deleteSAF = async (req, res) => {

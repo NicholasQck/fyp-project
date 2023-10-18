@@ -85,7 +85,13 @@ const Dashboard = () => {
         </ul>
 
         <div className="function-zone">
-          {tab === 1 && <SafSubmitted />}
+          {tab === 1 && (
+            <SafSubmitted
+              userID={userID}
+              roleID={roleID}
+              token={sessionToken}
+            />
+          )}
           {tab === 2 && <ProjectTitles />}
           {tab === 3 && <AllSaf />}
           {tab === 4 && <Manage />}
