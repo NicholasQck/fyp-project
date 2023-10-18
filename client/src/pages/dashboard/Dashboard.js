@@ -40,8 +40,9 @@ const Dashboard = () => {
 
   return (
     <>
-      {!sessionToken && <Modal />}
-      {logout && <Modal msg={'You have logged out from your account'} />}
+      {!sessionToken && (
+        <Modal msg={logout && 'You have logged out from your account'} />
+      )}
       <Navbar />
       <main>
         <article className="dashboard-info-article">
@@ -92,7 +93,7 @@ const Dashboard = () => {
               token={sessionToken}
             />
           )}
-          {tab === 2 && <ProjectTitles />}
+          {tab === 2 && <ProjectTitles userID={userID} token={sessionToken} />}
           {tab === 3 && <AllSaf />}
           {tab === 4 && <Manage />}
           {tab === 5 && <Announce />}
