@@ -11,10 +11,13 @@ import Navbar from '../../components/Navbar';
 
 // import utils
 import { validateSession } from '../../utils/sessionValidation';
+import { getUserData } from '../../utils/dataProvider';
 
 const TitleDetails = () => {
   const location = useLocation();
   const sessionToken = validateSession();
+  const user = getUserData(sessionToken);
+  const { roleID } = user || {};
 
   if (!location.state) {
     return <Navigate to="/titles" />;
@@ -39,25 +42,27 @@ const TitleDetails = () => {
           <h2>Project Description:</h2>
           <p>{titleDesc}</p>
 
-          <div className="title-detail-btn-container">
-            <button className="learn-more-btn light-blue-btn">
-              Learn more
-            </button>
-            <Link
-              to={`/saf/${titleID}`}
-              state={{ title }}
-              style={{
-                pointerEvents: availability ? '' : 'none',
-              }}
-            >
-              <button
-                className="submit-saf-btn dark-blue-btn"
-                style={{ backgroundColor: availability ? '' : '#808080' }}
-              >
-                Submit SAF
+          {roleID === 3 && (
+            <div className="title-detail-btn-container">
+              <button className="learn-more-btn light-blue-btn">
+                Learn more
               </button>
-            </Link>
-          </div>
+              <Link
+                to={`/saf/${titleID}`}
+                state={{ title }}
+                style={{
+                  pointerEvents: availability ? '' : 'none',
+                }}
+              >
+                <button
+                  className="submit-saf-btn dark-blue-btn"
+                  style={{ backgroundColor: availability ? '' : '#808080' }}
+                >
+                  Submit SAF
+                </button>
+              </Link>
+            </div>
+          )}
         </article>
       </main>
     </>
@@ -65,6 +70,3 @@ const TitleDetails = () => {
 };
 
 export default TitleDetails;
-
-// <Modal logout={true}/>
-// <Navigate to="/" />
