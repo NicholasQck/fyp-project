@@ -10,6 +10,7 @@ const Modal = ({ msg }) => {
   const handleClick = () => {
     modalRef.current.close();
     logout();
+    sessionStorage.removeItem('functionTab');
     navigate('/');
   };
 

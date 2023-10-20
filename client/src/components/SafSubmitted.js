@@ -15,6 +15,10 @@ const SafSubmitted = ({ userID, roleID, token }) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    sessionStorage.setItem('functionTab', JSON.stringify({ tab: 1 }));
+  }, []);
+
+  useEffect(() => {
     const fetchSaf = async () => {
       try {
         setLoading(true);
