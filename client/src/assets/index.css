@@ -87,3 +87,19 @@ code {
   background-color: #6b8cd6;
   transition: background-color 0.3s ease-out;
 }
+
+.red-btn {
+  color: #fff;
+  background-color: #da3633;
+  border-color: transparent;
+  border-radius: 20px;
+  cursor: pointer;
+  padding: 20px 15px;
+  width: fit-content;
+  font-size: 1.05rem;
+}
+
+.red-btn:hover {
+  background-color: #b32e2b;
+  transition: background-color 0.3s ease-out;
+}
