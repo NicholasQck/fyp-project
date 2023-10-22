@@ -129,8 +129,8 @@ export const safFormValidation = (safData, setError) => {
     return false;
   }
 
-  const courseValid = course.match(/^[a-zA-Z()\s]*$/);
-  const descBriefValid = descBrief.match(/^[\w\s.,!?'"()-]*$/);
+  const courseValid = course.match(/^[a-zA-Z()\s]+$/);
+  const descBriefValid = descBrief.match(/^[\w\s.,!?'"()-]+$/);
   const hrPerWeekValid = hrPerWeek.match(/^[0-9]+$/);
   const priorSubmissionValid = priorSubmission.match(/^[0-9]+$/);
 
@@ -170,5 +170,75 @@ export const safFormValidation = (safData, setError) => {
     return false;
   }
 
+  return true;
+};
+
+export const genTitleFormValidation = (genKeyword, setError) => {
+  if (!genKeyword) {
+    setError({
+      show: true,
+      type: 'fail',
+      msg: 'Please enter a keyword to get suggestions',
+      generative: true,
+    });
+    return false;
+  }
+
+  const keywordValid = genKeyword.match(/^[a-zA-Z0-9\s]+$/);
+
+  if (!keywordValid) {
+    setError({
+      show: true,
+      type: 'fail',
+      msg: 'Please provide a valid keyword',
+      generative: true,
+    });
+    return false;
+  }
+  return true;
+};
+
+export const titleFormValidation = (titleDetails, setError) => {
+  const { proposedBy, titleName, fieldArea, titleDesc } = titleDetails;
+
+  if (!proposedBy || !titleName || !fieldArea || !titleDesc) {
+    setError({
+      show: true,
+      type: 'fail',
+      msg: 'Please ensure all fields are provided',
+    });
+    return false;
+  }
+
+  const titleNameValid = titleName.match(/^[\w\s.,!?@%&'"():-]+$/);
+  const fieldAreaValid = fieldArea.match(/^[a-zA-Z0-9\s]+$/);
+  const titleDescValid = titleDesc.match(/^[\w\s.,!?@%&'"():-]+$/);
+
+  if (!titleNameValid) {
+    setError({
+      show: true,
+      type: 'fail',
+      msg: 'Please provide a valid project title',
+    });
+    return false;
+  }
+
+  if (!fieldAreaValid) {
+    setError({
+      show: true,
+      type: 'fail',
+      msg: 'Please provide a valid project field',
+    });
+    return false;
+  }
+
+  if (!titleDescValid) {
+    setError({
+      show: true,
+      type: 'fail',
+      msg: 'Please provide a valid description for the project',
+    });
+    return false;
+  }
   return true;
 };

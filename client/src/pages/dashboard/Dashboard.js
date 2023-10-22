@@ -26,7 +26,8 @@ const Dashboard = () => {
   const sessionToken = validateSession();
   const user = getUserData(sessionToken);
   const { roleID, userID, fName, lName } = user || {};
-  const [tab, setTab] = useState(1);
+  const previous = JSON.parse(sessionStorage.getItem('functionTab'));
+  const [tab, setTab] = useState(previous?.tab || 1);
   const [logout, setLogout] = useState(false);
 
   const handleClick = (e) => {
@@ -35,6 +36,8 @@ const Dashboard = () => {
 
   const userLogout = () => {
     sessionStorage.removeItem('user');
+    sessionStorage.removeItem('functionTab');
+    // sessionStorage.clear();
     setLogout(true);
   };
 
@@ -93,7 +96,14 @@ const Dashboard = () => {
               token={sessionToken}
             />
           )}
-          {tab === 2 && <ProjectTitles userID={userID} token={sessionToken} />}
+          {tab === 2 && (
+            <ProjectTitles
+              userID={userID}
+              fName={fName}
+              lName={lName}
+              token={sessionToken}
+            />
+          )}
           {tab === 3 && <AllSaf />}
           {tab === 4 && <Manage />}
           {tab === 5 && <Announce />}

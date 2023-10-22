@@ -7,9 +7,12 @@ import {
   createTitle,
   updateTitle,
   deleteTitle,
+  generateTitle,
 } from '../controllers/titles.js';
 
 export const titlesRouter = express.Router();
 
 titlesRouter.route('/').get(getAllTitles).post(createTitle);
-titlesRouter.route('/:id').get(getTitle).patch(updateTitle).delete(deleteTitle);
+titlesRouter.route('/generative').post(generateTitle);
+titlesRouter.route('/user').get(getTitle);
+titlesRouter.route('/:id').put(updateTitle).delete(deleteTitle);

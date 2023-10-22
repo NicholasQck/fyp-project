@@ -133,3 +133,141 @@ body {
   justify-content: space-around;
   margin-top: 60px;
 }
+
+.create-title-article {
+  background-color: #1d2023;
+  width: 65%;
+  margin: auto;
+  padding: 20px 15px 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.create-title-article h1 {
+  color: #1463f3;
+  font-size: 2.2rem;
+  margin-bottom: 40px;
+}
+
+.gen-title-msg {
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+}
+
+.title-gen-form {
+  margin-top: 10px;
+}
+
+.form-control-title {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-control-title label {
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+}
+
+.form-control-title input {
+  height: 30px;
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+  border-color: transparent;
+  background-color: #ccd0d8;
+}
+
+.form-control-title input:disabled {
+  cursor: not-allowed;
+}
+
+.gen-title-display {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+  margin-bottom: 20px;
+  background-color: #84a4fc;
+  min-height: 50px;
+  height: fit-content;
+  border-radius: 15px;
+}
+
+.gen-title-display p {
+  font-size: 1.1rem;
+  color: black;
+}
+
+.copy-btn {
+  height: 25px;
+  aspect-ratio: 1;
+  background-image: url(images/copyIcon.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.copy-btn:hover {
+  background-color: #ccd0d8;
+}
+
+.copy-btn:disabled {
+  cursor: not-allowed;
+}
+
+.create-title-form {
+  margin: 10px 0;
+}
+
+.form-control-title textarea {
+  resize: none;
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+  border-color: transparent;
+  background-color: #ccd0d8;
+}
+
+.title-btn {
+  margin-top: 30px;
+}
+
+.modify-btn-container {
+  display: flex;
+  gap: 30px;
+  margin-top: 30px;
+}
+
+.typewriter {
+  overflow: hidden;
+  border-right: 0.15em solid #1463f3;
+  white-space: nowrap;
+  animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+}
+
+.animation-end {
+  white-space: normal;
+  border: none;
+}
+
+/* The typing effect */
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+/* The typewriter cursor effect */
+@keyframes blink-caret {
+  from,
+  to {
+    border-color: transparent;
+  }
+  50% {
+    border-color: #1463f3;
+  }
+}

@@ -114,3 +114,33 @@
 .pending {
   color: #ccd0d8;
 }
+
+.project-titles-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.create-title-selection {
+  flex-grow: 1;
+  height: 100px;
+  margin: 5px 0px;
+  padding: 0 10px;
+  background-color: #1d2023;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: transform 0.2s ease-out;
+}
+
+.create-title-selection:hover {
+  transform: scale(1.03);
+  border: 1px solid #1463f3;
+}
+
+.create-title-text {
+  font-size: 1.5rem;
+}
+
+.plus-icon {
+  font-size: 4rem;
+}

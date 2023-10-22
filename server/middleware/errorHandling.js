@@ -14,5 +14,10 @@ export const errorHandlingMiddleware = (err, req, res, next) => {
     }
   }
 
+  if (err instanceof TypeError) {
+    customError.statusCode = StatusCodes.TOO_MANY_REQUESTS;
+    customError.msg = 'Too many requests, try again in 1 minute';
+  }
+
   res.status(customError.statusCode).json({ msg: customError.msg });
 };
