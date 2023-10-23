@@ -152,6 +152,9 @@ const SAF = () => {
         headers: { Authorization: `Bearer ${sessionToken}` },
       });
       setAlertMsg({ show: true, type: 'success', msg: res.data.msg });
+      setTimeout(() => {
+        navigate('/dashboard');
+      }, 2000);
       console.log(res);
     } catch (error) {
       const errMsg = error.response.data.msg;
@@ -347,7 +350,7 @@ const SAF = () => {
               {isAdmin && (
                 <button
                   type="submit"
-                  className="saf-btn dark-blue-btn "
+                  className="saf-btn red-btn "
                   onClick={handleDelete}
                 >
                   Delete

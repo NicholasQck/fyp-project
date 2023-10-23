@@ -2,7 +2,30 @@ import prisma from '../prisma/client.js';
 import { StatusCodes } from 'http-status-codes';
 
 export const getAllSAF = async (req, res) => {
-  res.send('get al SAF');
+  const saf = await prisma.sAF.findMany({
+    orderBy: {
+      submittedAt: 'desc',
+    },
+    include: {
+      fypTitle: {
+        include: {
+          supervisor: {
+            select: {
+              firstName: true,
+              lastName: true,
+            },
+          },
+        },
+      },
+      student: {
+        select: {
+          firstName: true,
+          lastName: true,
+        },
+      },
+    },
+  });
+  res.status(StatusCodes.OK).json({ saf });
 };
 
 export const getSAF = async (req, res) => {
@@ -91,6 +114,7 @@ export const createSAF = async (req, res) => {
 };
 
 export const updateSAF = async (req, res) => {
+  const method = req.method;
   const { id } = req.params;
   const { studentID, titleID, course, descBrief, hrPerWeek, priorSubmission } =
     req.body;
@@ -123,5 +147,22 @@ export const updateSAF = async (req, res) => {
 };
 
 export const deleteSAF = async (req, res) => {
-  res.send('delete SAF');
+  const { id } = req.params;
+  const saf = await prisma.sAF.delete({
+    where: {
+      safID: id,
+    },
+  });
+
+  const { titleID } = saf;
+  const titleUpdate = await prisma.title.update({
+    where: {
+      titleID: titleID,
+    },
+    data: {
+      availability: true,
+    },
+  });
+
+  res.status(StatusCodes.OK).json({ saf, titleUpdate, msg: 'SAF deleted' });
 };
