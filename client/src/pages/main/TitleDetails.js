@@ -18,25 +18,20 @@ const TitleDetails = () => {
   const sessionToken = validateSession();
   const user = getUserData(sessionToken);
   const { roleID } = user || {};
-
-  if (!location.state) {
-    return <Navigate to="/titles" />;
-  }
-
-  const { title } = location.state;
-
+  const { title } = location.state || {};
   const { titleID, titleName, availability, supervisor, fieldArea, titleDesc } =
-    title;
+    title || {};
 
   return (
     <>
       {!sessionToken && <Modal />}
+      {!location.state && <Navigate to="/titles" />}
       <Navbar />
       <main>
         <article className="title-detail-article">
           <h1>{titleName}</h1>
           <h3>{fieldArea}</h3>
-          <p>{supervisor.firstName + ' ' + supervisor.lastName}</p>
+          <p>{supervisor?.firstName + ' ' + supervisor?.lastName}</p>
           <br />
           <br />
           <h2>Project Description:</h2>
