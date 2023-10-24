@@ -301,6 +301,7 @@ const CreateTitle = () => {
 
               {createTitle && (
                 <button
+                  type="submit"
                   className="title-btn dark-blue-btn"
                   onClick={handleTitleSubmit}
                 >
@@ -310,11 +311,19 @@ const CreateTitle = () => {
 
               {!createTitle && (
                 <div className="modify-btn-container">
-                  <button className=" dark-blue-btn" onClick={handleTitleEdit}>
+                  <button
+                    type="submit"
+                    className=" dark-blue-btn"
+                    onClick={handleTitleEdit}
+                  >
                     Update
                   </button>
 
-                  <button className=" red-btn" onClick={handleTitleDelete}>
+                  <button
+                    type="submit"
+                    className=" red-btn"
+                    onClick={handleTitleDelete}
+                  >
                     Delete
                   </button>
                 </div>
