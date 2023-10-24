@@ -48,6 +48,14 @@
   cursor: not-allowed;
 }
 
+.form-control-saf select {
+  height: 30px;
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+  border-color: transparent;
+  background-color: #ccd0d8;
+}
+
 .form-control-saf select:hover {
   cursor: pointer;
 }
