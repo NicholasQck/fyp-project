@@ -51,6 +51,7 @@ export const userFormValidation = (userInput, setError) => {
 
   if (!roleIDValid) {
     setError({ show: true, type: 'fail', msg: 'Please select a proper role' });
+    console.log(roleID);
     return false;
   }
 
@@ -65,6 +66,62 @@ export const userFormValidation = (userInput, setError) => {
 
   if (password !== passwordConfirm) {
     setError({ show: true, type: 'fail', msg: 'Passwords do not match' });
+    return false;
+  }
+
+  return true;
+};
+
+export const userEditFormValidation = (userInput, setError) => {
+  const { userID, roleID, fName, lName } = userInput;
+
+  if (!userID || !roleID || !fName || !lName) {
+    setError({
+      show: true,
+      type: 'fail',
+      msg: 'Please ensure all fields are provided',
+    });
+    return false;
+  }
+
+  const userIDValid = userID.match(/^[a-z0-9]+$/);
+  const roleIDValid = roleID.match(/^[1-3]$/);
+  const fNameValid = fName.match(
+    /^[A-Za-z]+([-'\s]?[A-Za-z]+)?([-'\s]?[A-Za-z]+)?$/
+  );
+  const lNameValid = lName.match(
+    /^[A-Za-z]+([-'\s]?[A-Za-z]+)?([-'\s]?[A-Za-z]+)?$/
+  );
+
+  if (!userIDValid) {
+    setError({
+      show: true,
+      type: 'fail',
+      msg: 'User ID should only contain alphanumeric characters',
+    });
+    return false;
+  }
+
+  if (!fNameValid) {
+    setError({
+      show: true,
+      type: 'fail',
+      msg: 'First name should not contain special characters',
+    });
+    return false;
+  }
+
+  if (!lNameValid) {
+    setError({
+      show: true,
+      type: 'fail',
+      msg: 'Last name should not contain special characters',
+    });
+    return false;
+  }
+
+  if (!roleIDValid) {
+    setError({ show: true, type: 'fail', msg: 'Please select a proper role' });
     return false;
   }
 

@@ -28,6 +28,7 @@ const App = () => {
           <Route path="/saf/:title_id" element={<SAF />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/users/create_user" element={<CreateUser />} />
+          <Route path="/users/modify/:user_id" element={<CreateUser />} />
         </Route>
         <Route path="*" element={<Error />} />
       </Routes>

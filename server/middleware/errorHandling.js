@@ -12,6 +12,11 @@ export const errorHandlingMiddleware = (err, req, res, next) => {
       customError.statusCode = StatusCodes.CONFLICT;
       customError.msg = 'Data already exist in database';
     }
+
+    if (err.code === 'P2003') {
+      customError.statusCode = StatusCodes.INTERNAL_SERVER_ERROR;
+      customError.msg = 'Operation failed, contact support for assistance';
+    }
   }
 
   if (err instanceof TypeError) {

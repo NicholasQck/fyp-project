@@ -4,7 +4,18 @@ import bcrypt from 'bcrypt';
 import { BadRequestError } from '../errors/badRequest.js';
 
 export const getAllUsers = async (req, res) => {
-  res.send('get all users');
+  const users = await prisma.user.findMany({
+    orderBy: [
+      {
+        roleID: 'asc',
+      },
+      { firstName: 'asc' },
+    ],
+    include: {
+      role: true,
+    },
+  });
+  res.status(StatusCodes.OK).json({ users });
 };
 
 export const getUser = async (req, res) => {
@@ -25,17 +36,34 @@ export const createUser = async (req, res) => {
     },
   });
 
-  res
-    .status(StatusCodes.CREATED)
-    .json({ user, msg: 'User created successfully' });
+  res.status(StatusCodes.CREATED).json({ user, msg: 'User created' });
 };
 
 export const updateUser = async (req, res) => {
-  res.send('update user');
+  const { id } = req.params;
+  const { userID, roleID, fName, lName } = req.body;
+  const user = await prisma.user.update({
+    where: {
+      userID: id,
+    },
+    data: {
+      userID,
+      roleID: parseInt(roleID),
+      firstName: fName,
+      lastName: lName,
+    },
+  });
+  res.status(StatusCodes.OK).json({ user, msg: 'User updated' });
 };
 
 export const deleteUser = async (req, res) => {
-  res.send('delete user');
+  const { id } = req.params;
+  const user = await prisma.user.delete({
+    where: {
+      userID: id,
+    },
+  });
+  res.status(StatusCodes.OK).json({ user, msg: 'User deleted' });
 };
 
 export const getAllRoles = async (req, res) => {

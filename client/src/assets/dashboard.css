@@ -115,12 +115,12 @@
   color: #ccd0d8;
 }
 
-.project-titles-container {
+.dashboard-selection-container {
   display: flex;
   flex-direction: column;
 }
 
-.create-title-selection {
+.create-selection {
   flex-grow: 1;
   height: 100px;
   margin: 5px 0px;
@@ -132,15 +132,70 @@
   transition: transform 0.2s ease-out;
 }
 
-.create-title-selection:hover {
+.create-selection:hover {
   transform: scale(1.03);
   border: 1px solid #1463f3;
 }
 
-.create-title-text {
+.create-selection-text {
   font-size: 1.5rem;
 }
 
 .plus-icon {
   font-size: 4rem;
+}
+
+.single-user-article {
+  flex-grow: 1;
+  height: 100px;
+  margin: 5px 0px;
+  background-color: #1d2023;
+  transition: transform 0.2s ease-out;
+}
+
+.single-user-article:hover {
+  transform: scale(1.03);
+  border: 1px solid #1463f3;
+}
+
+.single-user-wrapper {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.user-info-container {
+  margin-left: 10px;
+}
+
+.user-info-container h2 {
+  word-spacing: -5px;
+}
+
+.user-info-container p {
+  font-size: 1.03rem;
+}
+
+.user-role-container {
+  margin-right: 10px;
+  text-align: right;
+  font-size: 1.1rem;
+}
+
+/* .user-role-container p {
+  color: white;
+} */
+
+.coordinator {
+  color: #1463f3;
+}
+
+.supervisor {
+  color: #84a4fc;
+}
+
+.student {
+  color: #ccd0d8;
 }
