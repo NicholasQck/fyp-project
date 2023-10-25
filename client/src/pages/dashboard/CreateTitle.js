@@ -205,6 +205,11 @@ const CreateTitle = () => {
     }
   };
 
+  const handleCancel = (e) => {
+    e.preventDefault();
+    navigate(-1);
+  };
+
   return (
     <>
       {!sessionToken && <Modal />}
@@ -300,17 +305,26 @@ const CreateTitle = () => {
               ></textarea>
 
               {createTitle && (
-                <button
-                  type="submit"
-                  className="title-btn dark-blue-btn"
-                  onClick={handleTitleSubmit}
-                >
-                  Create
-                </button>
+                <div className="btn-container">
+                  <button
+                    type="submit"
+                    className="title-btn dark-blue-btn"
+                    onClick={handleTitleSubmit}
+                  >
+                    Create
+                  </button>
+
+                  <button
+                    className="title-btn light-blue-btn"
+                    onClick={handleCancel}
+                  >
+                    Cancel
+                  </button>
+                </div>
               )}
 
               {!createTitle && (
-                <div className="modify-btn-container">
+                <div className="btn-container">
                   <button
                     type="submit"
                     className=" dark-blue-btn"
@@ -325,6 +339,10 @@ const CreateTitle = () => {
                     onClick={handleTitleDelete}
                   >
                     Delete
+                  </button>
+
+                  <button className="light-blue-btn" onClick={handleCancel}>
+                    Cancel
                   </button>
                 </div>
               )}
