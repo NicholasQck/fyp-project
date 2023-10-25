@@ -38,15 +38,15 @@ const ProjectTitles = ({ userID, fName, lName, token }) => {
   return (
     <>
       {loading && <Loading />}
-      <div className="project-titles-container">
+      <div className="dashboard-selection-container">
         <Link
           to={'/titles/create_title'}
           state={{ userID, fName, lName, createTitle: true }}
           className="disable-default-link"
         >
-          <article className="create-title-selection">
+          <article className="create-selection">
             <div>
-              <h1 className="create-title-text">Create a project title</h1>
+              <h1 className="create-selection-text">Create a project title</h1>
             </div>
 
             <div>
