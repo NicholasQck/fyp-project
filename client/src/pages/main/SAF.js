@@ -40,7 +40,8 @@ const SAF = () => {
     descBrief,
     hrPerWeek,
     priorSubmission,
-    approved,
+    remarks,
+    approvalStatus,
     student,
     fypTitle,
   } = saf || {};
@@ -53,6 +54,7 @@ const SAF = () => {
     descBrief: descBrief || '',
     hrPerWeek: hrPerWeek ? `${hrPerWeek}` : '1',
     priorSubmission: priorSubmission ? `${priorSubmission}` : '1',
+    remarks: remarks || '',
   });
   const [alertMsg, setAlertMsg] = useState({
     show: false,
@@ -70,7 +72,8 @@ const SAF = () => {
       course === safDetails.course &&
       descBrief === safDetails.descBrief &&
       hrPerWeek.toString() === safDetails.hrPerWeek &&
-      priorSubmission.toString() === safDetails.priorSubmission
+      priorSubmission.toString() === safDetails.priorSubmission &&
+      remarks === safDetails.remarks
     ) {
       return false;
     } else {
@@ -125,12 +128,52 @@ const SAF = () => {
     }
   };
 
+  const handleWithdraw = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.patch(
+        `/api/saf/${safID}`,
+        { titleID, approvalStatus: 4 },
+        { headers: { Authorization: `Bearer ${sessionToken}` } }
+      );
+      setAlertMsg({ show: true, type: 'success', msg: res.data.msg });
+      setTimeout(() => {
+        navigate('/dashboard');
+      }, 2000);
+      console.log(res);
+    } catch (error) {
+      const errMsg = error.response.data.msg;
+      setAlertMsg({ show: true, type: 'fail', msg: errMsg });
+      console.log(error);
+    }
+  };
+
   const handleApprove = async (e) => {
     e.preventDefault();
     try {
       const res = await axios.patch(
         `/api/saf/${safID}`,
-        { approved: true },
+        { approvalStatus: 2 },
+        { headers: { Authorization: `Bearer ${sessionToken}` } }
+      );
+      setAlertMsg({ show: true, type: 'success', msg: res.data.msg });
+      setTimeout(() => {
+        navigate('/dashboard');
+      }, 2000);
+      console.log(res);
+    } catch (error) {
+      const errMsg = error.response.data.msg;
+      setAlertMsg({ show: true, type: 'fail', msg: errMsg });
+      console.log(error);
+    }
+  };
+
+  const handleReject = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.patch(
+        `/api/saf/${safID}`,
+        { titleID, approvalStatus: 3 },
         { headers: { Authorization: `Bearer ${sessionToken}` } }
       );
       setAlertMsg({ show: true, type: 'success', msg: res.data.msg });
@@ -161,6 +204,11 @@ const SAF = () => {
       setAlertMsg({ show: true, type: 'fail', msg: errMsg });
       console.log(error);
     }
+  };
+
+  const handleCancel = (e) => {
+    e.preventDefault();
+    navigate(-1);
   };
   // console.log(safDetails);
 
@@ -227,7 +275,15 @@ const SAF = () => {
                 name="course"
                 onChange={handleChange}
                 defaultValue={course && `${course}`}
-                disabled={isAdmin || isSupervisor || approved ? true : false}
+                disabled={
+                  isAdmin ||
+                  isSupervisor ||
+                  approvalStatus === 2 ||
+                  approvalStatus === 3 ||
+                  approvalStatus === 4
+                    ? true
+                    : false
+                }
               >
                 <option value={''}>&#40;Please select a course&#41;</option>
                 {courses.map((courseName, index) => {
@@ -265,7 +321,15 @@ const SAF = () => {
                 rows="5"
                 value={safDetails.descBrief}
                 onChange={handleChange}
-                disabled={isAdmin || isSupervisor || approved ? true : false}
+                disabled={
+                  isAdmin ||
+                  isSupervisor ||
+                  approvalStatus === 2 ||
+                  approvalStatus === 3 ||
+                  approvalStatus === 4
+                    ? true
+                    : false
+                }
               ></textarea>
 
               <label htmlFor="hrPerWeek">
@@ -276,7 +340,15 @@ const SAF = () => {
                 id="hrPerWeek"
                 onChange={handleChange}
                 defaultValue={hrPerWeek && hrPerWeek}
-                disabled={isAdmin || isSupervisor || approved ? true : false}
+                disabled={
+                  isAdmin ||
+                  isSupervisor ||
+                  approvalStatus === 2 ||
+                  approvalStatus === 3 ||
+                  approvalStatus === 4
+                    ? true
+                    : false
+                }
               >
                 {Array.from({ length: 20 }).map((_, index) => {
                   if (index + 1 === hrPerWeek) {
@@ -304,7 +376,15 @@ const SAF = () => {
                   id="priorSubmission"
                   onChange={handleChange}
                   defaultValue={priorSubmission && priorSubmission}
-                  disabled={isAdmin || isSupervisor || approved ? true : false}
+                  disabled={
+                    isAdmin ||
+                    isSupervisor ||
+                    approvalStatus === 2 ||
+                    approvalStatus === 3 ||
+                    approvalStatus === 4
+                      ? true
+                      : false
+                  }
                 >
                   {Array.from({ length: 20 }).map((_, index) => {
                     if (index + 1 === priorSubmission) {
@@ -323,52 +403,144 @@ const SAF = () => {
                 </select>
                 <p>day&#40;s&#41;</p>
               </div>
+
+              <label htmlFor="remarks">Remarks &#40;Optional&#41;</label>
+              <textarea
+                name="remarks"
+                id="remarks"
+                cols="30"
+                rows="10"
+                value={safDetails.remarks}
+                onChange={handleChange}
+                disabled={
+                  isAdmin ||
+                  approvalStatus === 2 ||
+                  approvalStatus === 3 ||
+                  approvalStatus === 4
+                    ? true
+                    : false
+                }
+              ></textarea>
               {title && (
-                <button
-                  type="submit"
-                  className="saf-btn dark-blue-btn "
-                  onClick={handleSubmit}
-                >
-                  Submit
-                </button>
+                <div className="btn-container">
+                  <button
+                    type="submit"
+                    className="saf-btn dark-blue-btn "
+                    onClick={handleSubmit}
+                  >
+                    Submit
+                  </button>
+
+                  <button
+                    className="saf-btn light-blue-btn"
+                    onClick={handleCancel}
+                  >
+                    Cancel
+                  </button>
+                </div>
               )}
 
               {isSupervisor && (
-                <button
-                  type="submit"
-                  className="saf-btn dark-blue-btn "
-                  style={{
-                    pointerEvents: approved ? 'none' : '',
-                    backgroundColor: approved ? '#808080' : '',
-                  }}
-                  onClick={handleApprove}
-                >
-                  {approved ? 'Approved' : 'Approve'}
-                </button>
+                <div className="btn-container">
+                  <button
+                    type="submit"
+                    className="saf-btn green-btn "
+                    style={{
+                      pointerEvents: approvalStatus !== 1 ? 'none' : '',
+                      backgroundColor: approvalStatus !== 1 ? '#808080' : '',
+                    }}
+                    onClick={handleApprove}
+                  >
+                    {approvalStatus === 2 ? 'Approved' : 'Approve'}
+                  </button>
+
+                  <button
+                    type="submit"
+                    className="saf-btn red-btn "
+                    style={{
+                      pointerEvents: approvalStatus !== 1 ? 'none' : '',
+                      backgroundColor: approvalStatus !== 1 ? '#808080' : '',
+                    }}
+                    onClick={handleReject}
+                  >
+                    {approvalStatus === 3 ? 'Rejected' : 'Reject'}
+                  </button>
+
+                  <button
+                    type="submit"
+                    className="saf-btn dark-blue-btn "
+                    style={{
+                      pointerEvents: approvalStatus !== 1 ? 'none' : '',
+                      backgroundColor: approvalStatus !== 1 ? '#808080' : '',
+                    }}
+                    onClick={handleEdit}
+                  >
+                    Save
+                  </button>
+
+                  <button
+                    className="saf-btn light-blue-btn"
+                    onClick={handleCancel}
+                  >
+                    Cancel
+                  </button>
+                </div>
               )}
 
               {isAdmin && (
-                <button
-                  type="submit"
-                  className="saf-btn red-btn "
-                  onClick={handleDelete}
-                >
-                  Delete
-                </button>
+                <div className="btn-container">
+                  <button
+                    type="submit"
+                    className="saf-btn red-btn "
+                    onClick={handleDelete}
+                  >
+                    Delete
+                  </button>
+
+                  <button
+                    className="saf-btn light-blue-btn"
+                    onClick={handleCancel}
+                  >
+                    Cancel
+                  </button>
+                </div>
               )}
 
               {isStudent && (
-                <button
-                  type="submit"
-                  className="saf-btn dark-blue-btn "
-                  style={{
-                    pointerEvents: approved ? 'none' : '',
-                    backgroundColor: approved ? '#808080' : '',
-                  }}
-                  onClick={handleEdit}
-                >
-                  {approved ? 'Approved' : 'Edit'}
-                </button>
+                <div className="btn-container">
+                  <button
+                    type="submit"
+                    className="saf-btn dark-blue-btn "
+                    style={{
+                      pointerEvents: approvalStatus !== 1 ? 'none' : '',
+                      backgroundColor: approvalStatus !== 1 ? '#808080' : '',
+                    }}
+                    onClick={handleEdit}
+                  >
+                    {(approvalStatus === 1 || approvalStatus === 4) && 'Edit'}
+                    {approvalStatus === 2 && 'Approved'}
+                    {approvalStatus === 3 && 'Rejected'}
+                  </button>
+
+                  <button
+                    type="submit"
+                    className="saf-btn red-btn "
+                    style={{
+                      pointerEvents: approvalStatus !== 1 ? 'none' : '',
+                      backgroundColor: approvalStatus !== 1 ? '#808080' : '',
+                    }}
+                    onClick={handleWithdraw}
+                  >
+                    {approvalStatus === 4 ? 'Withdrawn' : 'Withdraw'}
+                  </button>
+
+                  <button
+                    className="saf-btn light-blue-btn"
+                    onClick={handleCancel}
+                  >
+                    Cancel
+                  </button>
+                </div>
               )}
 
               {alertMsg.show && (

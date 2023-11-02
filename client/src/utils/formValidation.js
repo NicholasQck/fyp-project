@@ -181,7 +181,7 @@ export const safFormValidation = (safData, setError) => {
     setError({
       show: true,
       type: 'fail',
-      msg: 'Please ensure all fields are provided',
+      msg: 'Please ensure all required fields are provided',
     });
     return false;
   }

@@ -26,12 +26,8 @@ const SafSubmitted = ({ userID, roleID, token }) => {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        if (res.data.saf === null) {
-          setSaf([]);
-        } else if (Array.isArray(res.data.saf) && res.data.saf.length > 0) {
+        if (res.data.saf.length > 0) {
           setSaf(res.data.saf);
-        } else if (typeof res.data.saf === 'object') {
-          setSaf([res.data.saf]);
         }
         setLoading(false);
         // console.log(res);
@@ -49,17 +45,12 @@ const SafSubmitted = ({ userID, roleID, token }) => {
       {loading && <Loading />}
       <div className="saf-submitted-container">
         {saf.length === 0 ? (
-          <div
-            style={{
-              textAlign: 'center',
-              fontSize: '1.3rem',
-            }}
-          >
+          <div className="empty-display-msg">
             No submissions at the moment...
           </div>
         ) : (
           saf.map((saf) => {
-            const { safID, approved, fypTitle } = saf;
+            const { safID, approvalStatus, fypTitle, submittedAt } = saf;
             // console.log(saf);
             return (
               <Link
@@ -73,11 +64,17 @@ const SafSubmitted = ({ userID, roleID, token }) => {
                 className="disable-default-link"
               >
                 <article key={safID} className="saf-item">
-                  <p className="saf-item-title">{fypTitle.titleName}</p>
-                  {approved ? (
-                    <p className="approved">Approved</p>
-                  ) : (
-                    <p className="pending">Pending</p>
+                  <div className="saf-info-brief">
+                    <p className="saf-item-title">{fypTitle?.titleName}</p>
+                    <p className="saf-item-date">
+                      {submittedAt?.split('T')[0]}
+                    </p>
+                  </div>
+                  {approvalStatus === 1 && <p className="pending">Pending</p>}
+                  {approvalStatus === 2 && <p className="approved">Approved</p>}
+                  {approvalStatus === 3 && <p className="rejected">Rejected</p>}
+                  {approvalStatus === 4 && (
+                    <p className="withdrawn">Withdrawn</p>
                   )}
                 </article>
               </Link>

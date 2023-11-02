@@ -22,7 +22,7 @@ model User {
   password  String
   role      Role    @relation(fields: [roleID], references: [roleID])
   titles    Title[]
-  saf       SAF?
+  saf       SAF[]
 }
 
 model Role {
@@ -39,19 +39,27 @@ model Title {
   titleDesc    String
   availability Boolean @default(true)
   supervisor   User    @relation(fields: [proposedBy], references: [userID])
-  saf          SAF?
+  saf          SAF[]
 }
 
 model SAF {
   safID           String   @id @default(uuid())
-  studentID       String   @unique
-  titleID         String   @unique
+  studentID       String
+  titleID         String
   course          String
   descBrief       String
   hrPerWeek       Int      @db.SmallInt
   priorSubmission Int      @db.SmallInt
+  remarks         String
   submittedAt     DateTime @default(now())
-  approved        Boolean  @default(false)
+  approvalStatus  Int      @default(1) @db.SmallInt
   student         User     @relation(fields: [studentID], references: [userID])
   fypTitle        Title    @relation(fields: [titleID], references: [titleID])
+}
+
+model Announcement {
+  announcementID String   @id @default(uuid())
+  title          String
+  content        String
+  postedAt       DateTime @default(now())
 }

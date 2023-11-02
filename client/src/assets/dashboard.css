@@ -78,6 +78,12 @@
   /* border: 1px solid white; */
 }
 
+.empty-display-msg {
+  text-align: center;
+  font-size: 1.3rem;
+  margin-top: 30px;
+}
+
 .saf-submitted-container {
   background-color: #1d2023;
   padding: 15px 20px;
@@ -103,7 +109,16 @@
   font-size: 1.3rem;
 }
 
+.saf-info-brief {
+  display: flex;
+  flex-direction: column;
+}
+
 .saf-item-title {
+  color: black;
+}
+
+.saf-item-date {
   color: black;
 }
 
@@ -113,6 +128,14 @@
 
 .pending {
   color: #ccd0d8;
+}
+
+.rejected {
+  color: #da3633;
+}
+
+.withdrawn {
+  color: #da3633;
 }
 
 .dashboard-selection-container {

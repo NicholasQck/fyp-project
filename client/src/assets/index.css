@@ -88,6 +88,22 @@ code {
   transition: background-color 0.3s ease-out;
 }
 
+.green-btn {
+  color: #fff;
+  background-color: #238636;
+  border-color: transparent;
+  border-radius: 20px;
+  cursor: pointer;
+  padding: 20px 15px;
+  width: fit-content;
+  font-size: 1.05rem;
+}
+
+.green-btn:hover {
+  background-color: #1e6d2d;
+  transition: background-color 0.3s ease-out;
+}
+
 .red-btn {
   color: #fff;
   background-color: #da3633;

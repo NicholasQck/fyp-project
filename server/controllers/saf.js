@@ -1,11 +1,10 @@
 import prisma from '../prisma/client.js';
 import { StatusCodes } from 'http-status-codes';
+import { unprocessableError } from '../errors/unprocessable.js';
 
 export const getAllSAF = async (req, res) => {
   const saf = await prisma.sAF.findMany({
-    orderBy: {
-      submittedAt: 'desc',
-    },
+    orderBy: [{ approvalStatus: 'asc' }, { submittedAt: 'desc' }],
     include: {
       fypTitle: {
         include: {
@@ -36,7 +35,8 @@ export const getSAF = async (req, res) => {
 
   if (studentID) {
     // find saf for student
-    saf = await prisma.sAF.findUnique({
+    console.log('test');
+    saf = await prisma.sAF.findMany({
       where: { studentID: user_id },
       include: {
         fypTitle: {
@@ -55,6 +55,9 @@ export const getSAF = async (req, res) => {
             lastName: true,
           },
         },
+      },
+      orderBy: {
+        submittedAt: 'desc',
       },
     });
   } else if (lecturerID) {
@@ -81,19 +84,42 @@ export const getSAF = async (req, res) => {
           },
         },
       },
+      orderBy: [
+        {
+          approvalStatus: 'asc',
+        },
+        {
+          submittedAt: 'desc',
+        },
+      ],
     });
-
-    if (saf.length === 0) {
-      saf = null;
-    }
   }
 
   res.status(StatusCodes.OK).json({ saf });
 };
 
 export const createSAF = async (req, res) => {
-  const { studentID, titleID, course, descBrief, hrPerWeek, priorSubmission } =
-    req.body;
+  const {
+    studentID,
+    titleID,
+    course,
+    descBrief,
+    hrPerWeek,
+    priorSubmission,
+    remarks,
+  } = req.body;
+  const checkSaf = await prisma.sAF.findMany({
+    where: {
+      studentID,
+    },
+  });
+
+  checkSaf.find((saf) => {
+    if (saf.approvalStatus === 1 || saf.approvalStatus === 2) {
+      throw new unprocessableError('Request cannot be processed');
+    }
+  });
+
   const saf = await prisma.sAF.create({
     data: {
       studentID,
@@ -102,6 +128,7 @@ export const createSAF = async (req, res) => {
       descBrief,
       hrPerWeek: parseInt(hrPerWeek),
       priorSubmission: parseInt(priorSubmission),
+      remarks,
     },
   });
   const titleUpdate = await prisma.title.update({
@@ -116,8 +143,16 @@ export const createSAF = async (req, res) => {
 export const updateSAF = async (req, res) => {
   const method = req.method;
   const { id } = req.params;
-  const { studentID, titleID, course, descBrief, hrPerWeek, priorSubmission } =
-    req.body;
+  const {
+    studentID,
+    titleID,
+    course,
+    descBrief,
+    hrPerWeek,
+    priorSubmission,
+    remarks,
+    approvalStatus,
+  } = req.body;
   let saf;
   let msg;
 
@@ -132,16 +167,39 @@ export const updateSAF = async (req, res) => {
         descBrief,
         hrPerWeek: parseInt(hrPerWeek),
         priorSubmission: parseInt(priorSubmission),
+        remarks,
       },
     });
     msg = 'SAF updated';
   } else if (method === 'PATCH') {
-    // do the approve saf logic
+    // do the approve, reject, withdraw saf logic
     saf = await prisma.sAF.update({
       where: { safID: id },
-      data: { approved: true },
+      data: { approvalStatus },
     });
-    msg = 'SAF approved';
+    if (approvalStatus === 2) {
+      msg = 'SAF approved';
+    } else if (approvalStatus === 3) {
+      await prisma.title.update({
+        where: {
+          titleID: titleID,
+        },
+        data: {
+          availability: true,
+        },
+      });
+      msg = 'SAF rejected';
+    } else if (approvalStatus === 4) {
+      await prisma.title.update({
+        where: {
+          titleID: titleID,
+        },
+        data: {
+          availability: true,
+        },
+      });
+      msg = 'SAF withdrawn';
+    }
   }
   res.status(StatusCodes.OK).json({ saf, msg });
 };
@@ -154,15 +212,16 @@ export const deleteSAF = async (req, res) => {
     },
   });
 
-  const { titleID } = saf;
-  const titleUpdate = await prisma.title.update({
-    where: {
-      titleID: titleID,
-    },
-    data: {
-      availability: true,
-    },
-  });
-
+  let titleUpdate;
+  if (saf.approvalStatus === 1 || saf.approvalStatus === 2) {
+    titleUpdate = await prisma.title.update({
+      where: {
+        titleID: saf.titleID,
+      },
+      data: {
+        availability: true,
+      },
+    });
+  }
   res.status(StatusCodes.OK).json({ saf, titleUpdate, msg: 'SAF deleted' });
 };
