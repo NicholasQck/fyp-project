@@ -42,6 +42,12 @@ body {
   /* border: 3px solid white; */
 }
 
+.no-title-msg {
+  text-align: center;
+  font-size: 1.3rem;
+  margin-top: 60px;
+}
+
 .titlelist {
   display: flex;
   flex-wrap: wrap;

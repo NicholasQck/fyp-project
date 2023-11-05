@@ -11,6 +11,7 @@ const Modal = ({ msg }) => {
     modalRef.current.close();
     logout();
     sessionStorage.removeItem('functionTab');
+    sessionStorage.removeItem('search');
     navigate('/');
   };
 

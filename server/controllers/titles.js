@@ -1,9 +1,11 @@
 import prisma from '../prisma/client.js';
 import cohere from 'cohere-ai';
+import { HfInference } from '@huggingface/inference';
 import { StatusCodes } from 'http-status-codes';
 
 export const getAllTitles = async (req, res) => {
-  const titles = await prisma.title.findMany({
+  const { search } = req.query;
+  let titles = await prisma.title.findMany({
     orderBy: {
       proposedBy: 'asc',
     },
@@ -16,6 +18,48 @@ export const getAllTitles = async (req, res) => {
       },
     },
   });
+
+  if (search) {
+    console.log(search);
+    const tempTitlesName = titles.map((title) => {
+      return title.titleName;
+    });
+
+    const tempTitlesField = titles.map((title) => {
+      return title.fieldArea;
+    });
+
+    const hf = new HfInference(process.env.HF_ACCESS_TOKEN);
+    let titleNameResult = await hf.sentenceSimilarity({
+      model: 'sentence-transformers/all-MiniLM-L6-v2',
+      inputs: {
+        source_sentence: search,
+        sentences: tempTitlesName,
+      },
+    });
+
+    let titleFieldResult = await hf.sentenceSimilarity({
+      model: 'sentence-transformers/all-MiniLM-L6-v2',
+      inputs: {
+        source_sentence: search,
+        sentences: tempTitlesField,
+      },
+    });
+
+    const titleScores = titles
+      .map((title, index) => {
+        return {
+          ...title,
+          score: (titleNameResult[index] + titleFieldResult[index]) / 2,
+        };
+      })
+      .sort((a, b) => {
+        return b.score - a.score;
+      });
+
+    titles = titleScores.filter((title) => title.score > 0.3);
+    console.log(titles);
+  }
   res.status(StatusCodes.OK).json({ titles });
 };
 

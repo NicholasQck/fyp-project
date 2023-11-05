@@ -37,6 +37,7 @@ const Dashboard = () => {
   const userLogout = () => {
     sessionStorage.removeItem('user');
     sessionStorage.removeItem('functionTab');
+    sessionStorage.removeItem('search');
     // sessionStorage.clear();
     setLogout(true);
   };

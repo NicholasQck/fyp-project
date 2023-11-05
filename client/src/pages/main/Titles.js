@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+// import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { useGlobalContext } from '../../context';
 
 // import assets
 import '../../assets/titles.css';
@@ -17,33 +16,54 @@ import Navbar from '../../components/Navbar';
 import TitleList from '../../components/TitleList';
 
 const Titles = () => {
-  const { checkSession } = useGlobalContext();
-  const [loading, setLoading] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState(
+    sessionStorage.getItem('search') || ''
+  );
   const [titles, setTitles] = useState([]);
   const sessionToken = validateSession();
 
-  const fetchTitles = useCallback(async () => {
-    try {
-      setLoading(true);
-      const res = await axios.get('/api/titles', {
-        headers: { Authorization: `Bearer ${sessionToken}` },
-      });
-      setTitles(res.data.titles);
-      setLoading(false);
-    } catch (error) {
-      console.log(error);
-      setLoading(false);
-    }
-  }, [sessionToken, setTitles, setLoading]);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
 
   useEffect(() => {
-    fetchTitles();
-  }, [fetchTitles]);
+    let delaySearch;
+    const fetchTitles = async () => {
+      setLoading(true);
+      try {
+        if (!searchQuery) {
+          const res = await axios.get('/api/titles', {
+            headers: { Authorization: `Bearer ${sessionToken}` },
+          });
+          setTitles(res.data.titles);
+          // console.log(res.data.titles);
+        } else {
+          const res = await axios.get(`/api/titles?search=${searchQuery}`, {
+            headers: { Authorization: `Bearer ${sessionToken}` },
+          });
+          setTitles(res.data.titles);
+          // console.log(res.data.titles);
+        }
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
+        setLoading(false);
+      }
+    };
 
-  if (loading) {
-    return <Loading />;
-  }
+    if (searchQuery) {
+      delaySearch = setTimeout(() => {
+        sessionStorage.setItem('search', searchQuery);
+        fetchTitles();
+      }, 1000);
+    } else {
+      fetchTitles();
+    }
+    return () => {
+      clearTimeout(delaySearch);
+    };
+  }, [sessionToken, searchQuery]);
 
   return (
     <>
@@ -51,7 +71,7 @@ const Titles = () => {
       <Navbar />
       <main>
         <div className="search-bar">
-          <form className="search-title-form">
+          <form className="search-title-form" onSubmit={handleSubmit}>
             <div className="form-control-search">
               <input
                 type="text"
@@ -67,12 +87,17 @@ const Titles = () => {
           </form>
         </div>
 
-        <div className="titlelist-container">
-          <TitleList titles={titles} />
-        </div>
-        <button onClick={checkSession}>check</button>
-        <Link to="/titles/details">title detail</Link>
-        <Link to="/users/create_user">create user</Link>
+        {loading ? (
+          <Loading />
+        ) : (
+          <div className="titlelist-container">
+            {titles.length === 0 ? (
+              <p className="no-title-msg">No titles</p>
+            ) : (
+              <TitleList titles={titles} />
+            )}
+          </div>
+        )}
       </main>
     </>
   );
