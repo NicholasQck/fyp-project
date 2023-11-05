@@ -58,6 +58,7 @@ const Titles = () => {
         fetchTitles();
       }, 1000);
     } else {
+      sessionStorage.setItem('search', '');
       fetchTitles();
     }
     return () => {
