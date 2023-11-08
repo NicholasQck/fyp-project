@@ -299,3 +299,16 @@ export const titleFormValidation = (titleDetails, setError) => {
   }
   return true;
 };
+
+export const announcementFormValidation = (formData, setError) => {
+  const { title, content } = formData;
+  if (!title || !content) {
+    setError({
+      show: true,
+      type: 'fail',
+      msg: 'Please ensure all fields are provided',
+    });
+    return false;
+  }
+  return true;
+};

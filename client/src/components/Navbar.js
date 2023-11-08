@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 import '../assets/navbar.css';
 import logo from '../assets/images/logo.png';
 import announceLogo from '../assets/images/announceLogo.png';
-import chatLogo from '../assets/images/chatLogo.png';
 
 const Navbar = () => {
   return (
@@ -25,13 +24,6 @@ const Navbar = () => {
             <li className="nav-list-item">
               <img src={announceLogo} alt="Announcement Logo" />
               <p>Announcements</p>
-            </li>
-          </Link>
-
-          <Link to={'/chat'} className="disable-default-link link-flex">
-            <li className="nav-list-item">
-              <img src={chatLogo} alt="Chat Logo" />
-              <p>Chat</p>
             </li>
           </Link>
 

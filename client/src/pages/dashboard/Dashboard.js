@@ -107,7 +107,7 @@ const Dashboard = () => {
           )}
           {tab === 3 && <AllSaf userID={userID} token={sessionToken} />}
           {tab === 4 && <Manage />}
-          {tab === 5 && <Announce />}
+          {tab === 5 && <Announce token={sessionToken} />}
           {tab === 6 && <Users token={sessionToken} />}
         </div>
       </main>

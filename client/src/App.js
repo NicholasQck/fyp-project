@@ -10,6 +10,8 @@ import Dashboard from './pages/dashboard/Dashboard';
 import CreateUser from './pages/dashboard/CreateUser';
 import CreateTitle from './pages/dashboard/CreateTitle';
 import Error from './pages/error/Error';
+import Announcements from './pages/main/Announcements';
+import CreateAnnouncement from './pages/dashboard/CreateAnnouncement';
 
 // import components
 import PrivateRoutes from './components/PrivateRoutes';
@@ -29,6 +31,15 @@ const App = () => {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/users/create_user" element={<CreateUser />} />
           <Route path="/users/modify/:user_id" element={<CreateUser />} />
+          <Route path="/announcements" element={<Announcements />} />
+          <Route
+            path="/announcements/create_announcement"
+            element={<CreateAnnouncement />}
+          />
+          <Route
+            path="/announcements/modify/:announcement_id"
+            element={<CreateAnnouncement />}
+          />
         </Route>
         <Route path="*" element={<Error />} />
       </Routes>

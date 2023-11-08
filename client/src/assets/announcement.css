@@ -1,0 +1,86 @@
+.create-announcement-article {
+  background-color: #1d2023;
+  width: 65%;
+  height: 60%;
+  margin: auto;
+}
+
+.create-announcement-form {
+  padding: 20px 15px 30px;
+}
+
+.form-control-announcement {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-control-announcement h1 {
+  color: #1463f3;
+  font-size: 2.2rem;
+  margin-bottom: 40px;
+}
+
+.form-control-announcement label {
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+}
+
+.form-control-announcement input {
+  height: 30px;
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+  border-color: transparent;
+  background-color: #ccd0d8;
+}
+
+.form-control-announcement textarea {
+  resize: none;
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+  border-color: transparent;
+  background-color: #ccd0d8;
+}
+
+.btn-container {
+  display: flex;
+  gap: 30px;
+  margin-top: 30px;
+}
+
+.announcements-container {
+  width: 65%;
+  margin: auto;
+}
+
+.no-announcement-msg {
+  text-align: center;
+  font-size: 2.2rem;
+  margin-top: 60px;
+}
+
+.single-announcement-article {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  background-color: #1d2023;
+  height: fit-content;
+  padding: 10px 20px;
+  margin-bottom: 30px;
+}
+
+.announcement-title {
+  margin-bottom: 10px;
+  color: #1463f3;
+  font-size: 1.5rem;
+}
+
+.announcement-posted-at {
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+  color: #84a4fc;
+}
+
+.announcement-content {
+  font-size: 1.1rem;
+  white-space: pre-wrap;
+}

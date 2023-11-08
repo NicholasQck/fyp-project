@@ -105,10 +105,6 @@
   padding: 0px 10px;
 }
 
-.saf-item p {
-  font-size: 1.3rem;
-}
-
 .saf-info-brief {
   display: flex;
   flex-direction: column;
@@ -116,26 +112,32 @@
 
 .saf-item-title {
   color: black;
+  font-size: 1.3rem;
 }
 
 .saf-item-date {
   color: black;
+  font-size: 1.1rem;
 }
 
 .approved {
   color: #1463f3;
+  font-size: 1.3rem;
 }
 
 .pending {
   color: #ccd0d8;
+  font-size: 1.3rem;
 }
 
 .rejected {
   color: #da3633;
+  font-size: 1.3rem;
 }
 
 .withdrawn {
   color: #da3633;
+  font-size: 1.3rem;
 }
 
 .dashboard-selection-container {
@@ -207,10 +209,6 @@
   font-size: 1.1rem;
 }
 
-/* .user-role-container p {
-  color: white;
-} */
-
 .coordinator {
   color: #1463f3;
 }
@@ -221,4 +219,29 @@
 
 .student {
   color: #ccd0d8;
+}
+
+.announcement-display-article {
+  flex-grow: 1;
+  height: 100px;
+  margin: 5px 0px;
+  padding: 0 10px;
+  background-color: #1d2023;
+  transition: transform 0.2s ease-out;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.announcement-display-article:hover {
+  transform: scale(1.03);
+  border: 1px solid #1463f3;
+}
+
+.announcement-display-title {
+  word-spacing: -5px;
+}
+
+.announcement-display-date {
+  font-size: 1.03rem;
 }
