@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 // import assets
 import '../assets/navbar.css';
@@ -7,12 +7,24 @@ import logo from '../assets/images/logo.png';
 import announceLogo from '../assets/images/announceLogo.png';
 
 const Navbar = () => {
+  const location = useLocation();
+  const current = location.pathname;
+
   return (
     <nav>
       <div className="nav-center">
         <div className="main-logo">
           <Link to={'/titles'} className="disable-default-link">
-            <img src={logo} alt="Logo" />
+            <img
+              src={logo}
+              alt="Logo"
+              onClick={() => {
+                if (current === '/titles') {
+                  sessionStorage.setItem('search', '');
+                  window.location.reload();
+                }
+              }}
+            />
           </Link>
         </div>
 
