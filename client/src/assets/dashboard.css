@@ -245,3 +245,8 @@
 .announcement-display-date {
   font-size: 1.03rem;
 }
+
+.critical-msg {
+  color: #da3633;
+  font-size: 1.3rem;
+}

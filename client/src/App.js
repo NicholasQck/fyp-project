@@ -12,6 +12,7 @@ import CreateTitle from './pages/dashboard/CreateTitle';
 import Error from './pages/error/Error';
 import Announcements from './pages/main/Announcements';
 import CreateAnnouncement from './pages/dashboard/CreateAnnouncement';
+import AssignTitle from './pages/dashboard/AssignTitle';
 
 // import components
 import PrivateRoutes from './components/PrivateRoutes';
@@ -30,6 +31,7 @@ const App = () => {
           <Route path="/saf/:title_id" element={<SAF />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/users/create_user" element={<CreateUser />} />
+          <Route path="/users/assign/:user_id" element={<AssignTitle />} />
           <Route path="/users/modify/:user_id" element={<CreateUser />} />
           <Route path="/announcements" element={<Announcements />} />
           <Route

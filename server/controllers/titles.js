@@ -142,3 +142,12 @@ export const generateTitle = async (req, res) => {
 
   res.status(StatusCodes.OK).json({ genTitle });
 };
+
+export const getAvailableTitles = async (req, res) => {
+  const titles = await prisma.title.findMany({
+    where: {
+      availability: true,
+    },
+  });
+  res.status(StatusCodes.OK).json({ titles });
+};

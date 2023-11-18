@@ -74,3 +74,33 @@ export const getAllRoles = async (req, res) => {
   });
   res.status(StatusCodes.OK).json({ roles });
 };
+
+export const getUnassignedStudents = async (req, res) => {
+  const users = await prisma.user.findMany({
+    where: {
+      AND: [
+        {
+          roleID: 3,
+        },
+        {
+          saf: {
+            none: {
+              approvalStatus: 2,
+            },
+          },
+        },
+      ],
+    },
+    include: {
+      saf: {
+        orderBy: {
+          submittedAt: 'desc',
+        },
+      },
+    },
+    orderBy: {
+      firstName: 'asc',
+    },
+  });
+  res.status(StatusCodes.OK).json({ users });
+};
