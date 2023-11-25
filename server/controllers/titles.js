@@ -21,12 +21,16 @@ export const getAllTitles = async (req, res) => {
 
   if (search) {
     console.log(search);
-    const tempTitlesName = titles.map((title) => {
-      return title.titleName;
-    });
-
-    const tempTitlesField = titles.map((title) => {
-      return title.fieldArea;
+    let exactSearchTitles = [];
+    let tempTitlesName = [];
+    let tempTitlesField = [];
+    titles.forEach((title) => {
+      if (title.titleName.toLowerCase().includes(search.toLowerCase())) {
+        exactSearchTitles.push(title);
+      } else {
+        tempTitlesName.push(title.titleName);
+        tempTitlesField.push(title.fieldArea);
+      }
     });
 
     const hf = new HfInference(process.env.HF_ACCESS_TOKEN);
@@ -50,7 +54,7 @@ export const getAllTitles = async (req, res) => {
       .map((title, index) => {
         return {
           ...title,
-          score: (titleNameResult[index] + titleFieldResult[index]) / 2,
+          score: (titleNameResult[index] * 4 + titleFieldResult[index]) / 5,
         };
       })
       .sort((a, b) => {
@@ -58,6 +62,7 @@ export const getAllTitles = async (req, res) => {
       });
 
     titles = titleScores.filter((title) => title.score > 0.3);
+    titles.push(...exactSearchTitles);
     console.log(titles);
   }
   res.status(StatusCodes.OK).json({ titles });
