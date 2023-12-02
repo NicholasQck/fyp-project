@@ -11,10 +11,6 @@ const initState = {
 export const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initState);
 
-  const setError = (show = false, msg = '') => {
-    dispatch({ type: 'SET_ERROR', payload: { show, msg } });
-  };
-
   const login = (token) => {
     const decodedUser = jwt_decode(token);
     dispatch({ type: 'SET_USER', payload: { decodedUser } });
@@ -25,7 +21,7 @@ export const AppProvider = ({ children }) => {
   };
 
   return (
-    <AppContext.Provider value={{ ...state, setError, login, logout }}>
+    <AppContext.Provider value={{ ...state, login, logout }}>
       {children}
     </AppContext.Provider>
   );

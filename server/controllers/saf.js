@@ -35,7 +35,6 @@ export const getSAF = async (req, res) => {
 
   if (studentID) {
     // find saf for student
-    console.log('test');
     saf = await prisma.sAF.findMany({
       where: { studentID: user_id },
       include: {
