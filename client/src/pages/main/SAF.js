@@ -91,7 +91,7 @@ const SAF = () => {
         });
         setAlertMsg({ show: true, type: 'success', msg: res.data.msg });
         setTimeout(() => {
-          navigate('/');
+          navigate('/dashboard');
         }, 2000);
         console.log(res);
       } catch (error) {
