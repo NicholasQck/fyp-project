@@ -13,6 +13,44 @@ export const roles = [
   },
 ];
 
+export const users = [
+  {
+    userID: 'charisk',
+    roleID: 1,
+    firstName: 'Charis',
+    lastName: 'Kwan',
+    password: '$2b$10$wdyQ8h.EDstldxY5HgmDNulA6dfRZrSLk6DTOFdv1owICYcXRxa2W',
+  },
+  {
+    userID: 'woanningl',
+    roleID: 2,
+    firstName: 'Woan Ning',
+    lastName: 'Lim',
+    password: '$2b$10$0JDqCpGcZiyPztpqHJj1SOvZq2xfPQMJiehfNefhS9.PiUxyq8f6e',
+  },
+  {
+    userID: 'richardwtk',
+    roleID: 2,
+    firstName: 'Richard',
+    lastName: 'Wong',
+    password: '$2b$10$ZCa8yxvYVo8sZJp94yGm/e88OY.tfxyxJootkwSfEvajeA1uU9PuC',
+  },
+  {
+    userID: 'angelal',
+    roleID: 2,
+    firstName: 'Angela',
+    lastName: 'Lee',
+    password: '$2b$10$3z8k4zcezpH0Z4LHcMgSwOLdGr6bhirIecdyj3xlhAhwqiZPMLha.',
+  },
+  {
+    userID: '19116185',
+    roleID: 3,
+    firstName: 'Wei Bin',
+    lastName: 'Ng',
+    password: '$2b$10$k8cHwgIFYowgpyDpTypnzeEPXasQHrZh9K6sqTudMmjQBRRb/xp9e',
+  },
+];
+
 export const titles = [
   {
     proposedBy: 'woanningl',
