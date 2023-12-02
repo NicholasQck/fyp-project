@@ -39,11 +39,17 @@ const TitleDetails = () => {
 
           {roleID === 3 && (
             <div className="title-detail-btn-container">
-              <Link to={'https://outlook.office.com/mail/'}>
+              <a
+                href="https://outlook.office.com/mail/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <button className="learn-more-btn light-blue-btn">
                   Learn more
                 </button>
-              </Link>
+              </a>
+              {/* <Link to={'https://outlook.office.com/mail/'}>
+              </Link> */}
               <Link
                 to={`/saf/${titleID}`}
                 state={{ title }}
