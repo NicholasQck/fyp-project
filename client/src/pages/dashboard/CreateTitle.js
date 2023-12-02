@@ -330,7 +330,7 @@ const CreateTitle = () => {
                     className=" dark-blue-btn"
                     onClick={handleTitleEdit}
                   >
-                    Update
+                    Save
                   </button>
 
                   <button

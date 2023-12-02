@@ -517,7 +517,7 @@ const SAF = () => {
                     }}
                     onClick={handleEdit}
                   >
-                    {(approvalStatus === 1 || approvalStatus === 4) && 'Edit'}
+                    {(approvalStatus === 1 || approvalStatus === 4) && 'Save'}
                     {approvalStatus === 2 && 'Approved'}
                     {approvalStatus === 3 && 'Rejected'}
                   </button>
